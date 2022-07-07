@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NoteApp.Repository.Entities.NoteEntity;
+using System.ComponentModel.DataAnnotations;
 
 namespace NoteApp.Repository.Entities
 {
@@ -13,5 +14,16 @@ namespace NoteApp.Repository.Entities
 
         [Required]
         public string Password { get; set; }
+
+        public List<Note> NotesList { get; set; }
+
+        public User(string email, string password)
+        {
+            Id = Guid.NewGuid();
+            Email = email;
+            Password = password;
+
+            NotesList = new List<Note>();
+        }
     }
 }
