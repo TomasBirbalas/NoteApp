@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NoteApp.Repository.DbConfig;
 using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
 
@@ -13,9 +12,6 @@ namespace NoteApp.Repository.DbContexts
         public DbSet<Note> Notes { get; set; }
         public DbSet<Image> Images { get; set; }
 
-        public NoteAppContext(IDbConfiguration options) : base(options.Options)
-        {
-
-        }
+        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer($"Server=localhost;Database=NoteAppDB;Trusted_Connection=True;");
     }
 }
