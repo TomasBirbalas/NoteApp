@@ -24,6 +24,9 @@ namespace NoteApp.Repository.Entities.NoteEntity
         public DateTime Created { get; set; }
         public List<Image> Images { get; set; }
 
+        public List<Category> CategoriesList { get; set; }
+
+
         public Note(string title, string content, bool isPublic)
         {
             Id = Guid.NewGuid();
@@ -33,6 +36,8 @@ namespace NoteApp.Repository.Entities.NoteEntity
             Created = DateTime.Now;
 
             Images = new List<Image>();
+
+            CategoriesList = new List<Category>();
         }
     }
 }

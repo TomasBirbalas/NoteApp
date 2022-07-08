@@ -1,11 +1,6 @@
 ﻿using NoteApp.Repository.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoteApp.Repository.Entities
 {
@@ -31,13 +26,13 @@ namespace NoteApp.Repository.Entities
         public Guid UserId { get; set; }
         public User User { get; set; }
 
-        public UserDetails(string name, string surname, Gender gender, DateTime dob)
+        public UserDetails(string name, string surname, Gender gender, DateTime dateOfBirth)
         {
             Id = Guid.NewGuid();
             Name = name;
             Surname = surname;
             Gender = gender;
-            DateOfBirth = dob;
+            DateOfBirth = dateOfBirth;
 
             Created = DateTime.Now;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NoteApp.Repository.Entities.NoteEntity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,11 +24,15 @@ namespace NoteApp.Repository.Entities
         [ForeignKey("User")]
         public Guid UserId { get; set; }
 
+        public List<Note> NotesList { get; set; }
+
         public Category(string title)
         {
             Id = Guid.NewGuid();
             Title = title;
             CreatedAt = DateTime.Now;
+
+            NotesList = new List<Note>();
         }
     }
 }

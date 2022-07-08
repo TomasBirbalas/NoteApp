@@ -29,11 +29,11 @@ namespace NoteApp.Repository.Entities.NoteEntity
         public Guid NoteId { get; set; }
         public Note Note { get; set; }
 
-        public Image(string title, string alt)
+        public Image(string title, string url, string alt)
         {
             Id = Guid.NewGuid();
             Title = title;
-
+            Url = url;
             Alt = alt;
             PostedAt = DateTime.Now;
         }
