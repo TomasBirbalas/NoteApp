@@ -18,9 +18,26 @@ namespace NoteApp.Repository.Entities.NoteEntity
 
         [Required]
         public string Content { get; set; }
-        public DateTime Created { get; set; }
 
         [Required]
-        public bool IsPublic { get; set; }
+        public bool IsPublic { get; set; } = true;
+        public DateTime Created { get; set; }
+        public List<Image> Images { get; set; }
+
+        public List<Category> CategoriesList { get; set; }
+
+
+        public Note(string title, string content, bool isPublic)
+        {
+            Id = Guid.NewGuid();
+            Title = title;
+            Content = content;
+            IsPublic = isPublic;
+            Created = DateTime.Now;
+
+            Images = new List<Image>();
+
+            CategoriesList = new List<Category>();
+        }
     }
 }

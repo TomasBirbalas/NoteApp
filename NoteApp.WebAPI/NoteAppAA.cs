@@ -1,6 +1,6 @@
 namespace NoteApp.WebAPI
 {
-    public class WeatherForecast
+    public class NoteAppAA
     {
         public DateTime Date { get; set; }
 
