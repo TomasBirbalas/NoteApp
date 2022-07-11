@@ -17,6 +17,8 @@ namespace NoteApp.Repository.Entities
 
         public List<Note> NotesList { get; set; }
 
+        public List<RefreshToken> RefreshTokens { get; set; }
+
         public User(string email, byte[] passwordHash, byte[] passwordSalt)
         {
             Id = Guid.NewGuid();
@@ -29,6 +31,7 @@ namespace NoteApp.Repository.Entities
             PasswordSalt = passwordSalt;
 
             NotesList = new List<Note>();
+            RefreshTokens = new List<RefreshToken>();
         }
     }
 }

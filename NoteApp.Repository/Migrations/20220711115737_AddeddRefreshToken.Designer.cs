@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NoteApp.Repository.DbContexts;
 
@@ -11,9 +12,10 @@ using NoteApp.Repository.DbContexts;
 namespace NoteApp.Repository.Migrations
 {
     [DbContext(typeof(NoteAppContext))]
-    partial class NoteAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220711115737_AddeddRefreshToken")]
+    partial class AddeddRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("NotesListId");
 
-                    b.ToTable("CategoryNote", (string)null);
+                    b.ToTable("CategoryNote");
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.Category", b =>
@@ -55,7 +57,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.NoteEntity.Image", b =>
@@ -86,7 +88,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("NoteId");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.NoteEntity.Note", b =>
@@ -116,7 +118,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes", (string)null);
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.RefreshToken", b =>
@@ -142,7 +144,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.User", b =>
@@ -165,7 +167,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.UserDetails", b =>
@@ -198,7 +200,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDetails", (string)null);
+                    b.ToTable("UserDetails");
                 });
 
             modelBuilder.Entity("CategoryNote", b =>

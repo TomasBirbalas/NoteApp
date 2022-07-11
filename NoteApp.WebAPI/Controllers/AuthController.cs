@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NoteApp.Repository;
 using NoteApp.Repository.DbContexts;
 using NoteApp.Repository.Entities;
@@ -17,10 +18,10 @@ namespace NoteApp.WebAPI.Controllers
         private readonly NoteAppContext _context;
         private readonly IConfiguration _configuration;
 
-        public AuthController(NoteAppContext context, IConfiguration configuration)
+        public AuthController(IConfiguration configuration, NoteAppContext context)
         {
-            _context = context;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpPost("register")]
@@ -64,7 +65,37 @@ namespace NoteApp.WebAPI.Controllers
             string token = CreateToken(user);
 
 
-            return Ok(token);
+            var refreshToken = GenerateRefreshToken();
+            SetRefreshToken(refreshToken, user);
+
+            return Ok(new { Token = token });
+        }
+
+
+        private RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Created = DateTime.Now,
+                Expires = DateTime.Now.AddMinutes(15),
+            };
+
+            return refreshToken;
+        }
+
+        private void SetRefreshToken(RefreshToken newRefreshToken, User user)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = newRefreshToken.Expires
+            };
+            Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
+            
+            user.RefreshTokens.Add(newRefreshToken);
+            _context.RefreshTokens.Add(newRefreshToken);
+            _context.SaveChanges();
         }
 
         private string CreateToken(User user)
@@ -74,15 +105,18 @@ namespace NoteApp.WebAPI.Controllers
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds
                 );
+
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
