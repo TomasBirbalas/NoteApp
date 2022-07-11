@@ -37,13 +37,6 @@ namespace NoteApp.Business
             _context.SaveChanges();
         }
 
-        public void CreateNewCategory(string title)
-        {
-            var category = new Category(title);
-            _context.Add(category);
-            _context.SaveChanges();
-        }
-
         public User GetCurrentUser()
         {
             Guid userId = GetCurrentUserId();
