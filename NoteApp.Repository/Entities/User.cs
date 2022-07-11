@@ -10,14 +10,14 @@ namespace NoteApp.Repository.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public string Email { get; set; }
-
-        [Required]
-        public string Password { get; set; }
+        public string Email { get; set; } = string.Empty;
+        
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
 
         public List<Note> NotesList { get; set; }
 
-        public User(string email, string password)
+        public User(string email, byte[] passwordHash, byte[] passwordSalt)
         {
             Id = Guid.NewGuid();
 
@@ -25,41 +25,10 @@ namespace NoteApp.Repository.Entities
             {
                 Email = email;
             }
-            if (PasswordValidation(password))
-            {
-                Password = password;
-            }
+            PasswordHash = passwordHash;
+            PasswordSalt = passwordSalt;
 
             NotesList = new List<Note>();
-        }
-
-        private bool PasswordValidation(string password)
-        {
-            char[] specialChArray = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-".ToCharArray();
-
-            if (password.Length < 8)
-            {
-                return false;
-            }
-            if(!password.Any(char.IsUpper))
-            {
-                return false;
-            }
-            if (!password.Any(char.IsLower))
-            {
-                return false;
-            }
-            if (password.Contains(" "))
-            {
-                return false;
-            }
-
-            foreach (char ch in specialChArray)
-            {
-                if (password.Contains(ch))
-                    return true;
-            }
-            return true;
         }
     }
 }
