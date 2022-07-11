@@ -48,7 +48,7 @@ namespace NoteApp.WebAPI.Controllers
 
         [HttpPost("login")]
 
-        public ActionResult<string> Login(UserDto request)
+        public ActionResult<string> Login([FromBody] UserDto request)
         {
             var user = _context.Users.Where(u => u.Email == request.Email).FirstOrDefault();
 
@@ -93,7 +93,7 @@ namespace NoteApp.WebAPI.Controllers
             Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
             
             user.RefreshTokens.Add(newRefreshToken);
-            _context.RefreshTokens.Add(newRefreshToken);
+            _context.RefreshTokens?.Add(newRefreshToken);
             _context.SaveChanges();
         }
 
@@ -101,7 +101,8 @@ namespace NoteApp.WebAPI.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
