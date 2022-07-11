@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NoteApp.Repository.DbConfigs;
 using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
 
@@ -13,12 +14,7 @@ namespace NoteApp.Repository.DbContexts
         public DbSet<Image> Images { get; set; }
         public DbSet<RefreshToken>? RefreshTokens { get; set; }
 
-        public NoteAppContext()
-        {
-
-        }
-
-        public NoteAppContext(DbContextOptions<NoteAppContext> options) : base(options)
+        public NoteAppContext(IDbConfigurations options) : base(options.Options)
         {
 
         }

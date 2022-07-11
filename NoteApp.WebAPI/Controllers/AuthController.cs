@@ -64,7 +64,6 @@ namespace NoteApp.WebAPI.Controllers
 
             string token = CreateToken(user);
 
-
             var refreshToken = GenerateRefreshToken();
             SetRefreshToken(refreshToken, user);
 
