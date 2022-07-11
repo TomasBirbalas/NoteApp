@@ -11,7 +11,16 @@ namespace NoteApp.Repository.DbContexts
         public DbSet<Category> Categories { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<RefreshToken>? RefreshTokens { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer($"Server=localhost;Database=NoteAppDB;Trusted_Connection=True;");
+        public NoteAppContext()
+        {
+
+        }
+
+        public NoteAppContext(DbContextOptions<NoteAppContext> options) : base(options)
+        {
+
+        }
     }
 }
