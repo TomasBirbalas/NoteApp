@@ -1,12 +1,13 @@
 ﻿using NoteApp.Repository.Entities;
+using NoteApp.Repository.Entities.NoteEntity;
 using NoteApp.Repository.Models;
 
-namespace NoteApp.Business
+namespace NoteApp.Business.Services
 {
     public interface IUserServices
     {
         void AddUserDetails(string name, string surname, Gender gender, DateTime dob);
-        void CreateNewNote(string title, string content, bool status);
+        Note CreateNewNote(string title, string content, bool status);
         User GetCurrentUser();
     }
 }
