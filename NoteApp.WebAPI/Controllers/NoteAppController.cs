@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NoteApp.Repository.DbContexts;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using NoteApp.Business.Services;
+using NoteApp.Repository.Entities.NoteEntity;
 
 namespace NoteApp.WebAPI.Controllers
 {
@@ -8,25 +11,21 @@ namespace NoteApp.WebAPI.Controllers
     [Route("api/[controller]")]
     public class NoteAppController : ControllerBase
     {
-        private readonly NoteAppContext _context;
+        private readonly IUserServices _userServices;
+        private readonly INoteServices _noteServices;
 
-        public NoteAppController(NoteAppContext context)
+        public NoteAppController(IUserServices user, INoteServices note)
         {
-            _context = context;
+            _userServices = user;
+            _noteServices = note;
         }
 
-        [HttpGet("notes"), Authorize]
-        public IActionResult GetAllNotes()
+        [HttpPost("AddNote"), Authorize]
+        public IActionResult GetAllNotes(string title, string content, bool isPublic)
         {
-            var notesList = _context.Notes.ToList();
+            var newNote = _userServices.CreateNewNote(title, content, isPublic);
 
-            if(notesList.Count == 0)
-            {
-                return BadRequest("No notes");
-            }
-
-            return Ok(notesList);
+            return Ok($"Note created {newNote.Title}");
         }
-
     }
 }

@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NoteApp.Business\NoteApp.Business.csproj" />
     <ProjectReference Include="..\NoteApp.Repository\NoteApp.Repository.csproj" />
   </ItemGroup>
 

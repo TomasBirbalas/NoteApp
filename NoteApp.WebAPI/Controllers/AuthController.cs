@@ -48,7 +48,7 @@ namespace NoteApp.WebAPI.Controllers
 
         [HttpPost("login")]
 
-        public ActionResult<string> Login(UserDto request)
+        public ActionResult<string> Login([FromBody] UserDto request)
         {
             var user = _context.Users.Where(u => u.Email == request.Email).FirstOrDefault();
 
@@ -64,44 +64,45 @@ namespace NoteApp.WebAPI.Controllers
 
             string token = CreateToken(user);
 
-            var refreshToken = GenerateRefreshToken();
-            SetRefreshToken(refreshToken, user);
+            //var refreshToken = GenerateRefreshToken();
+            //SetRefreshToken(refreshToken, user);
 
-            return Ok(new { Token = token });
+            return Ok(token );
         }
 
 
-        private RefreshToken GenerateRefreshToken()
-        {
-            var refreshToken = new RefreshToken
-            {
-                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Created = DateTime.Now,
-                Expires = DateTime.Now.AddMinutes(15),
-            };
+        //private RefreshToken GenerateRefreshToken()
+        //{
+        //    var refreshToken = new RefreshToken
+        //    {
+        //        Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+        //        Created = DateTime.Now,
+        //        Expires = DateTime.Now.AddMinutes(15),
+        //    };
 
-            return refreshToken;
-        }
+        //    return refreshToken;
+        //}
 
-        private void SetRefreshToken(RefreshToken newRefreshToken, User user)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = newRefreshToken.Expires
-            };
-            Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
+        //private void SetRefreshToken(RefreshToken newRefreshToken, User user)
+        //{
+        //    var cookieOptions = new CookieOptions
+        //    {
+        //        HttpOnly = true,
+        //        Expires = newRefreshToken.Expires
+        //    };
+        //    Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
             
-            user.RefreshTokens.Add(newRefreshToken);
-            _context.RefreshTokens.Add(newRefreshToken);
-            _context.SaveChanges();
-        }
+        //    user.RefreshTokens.Add(newRefreshToken);
+        //    _context.RefreshTokens?.Add(newRefreshToken);
+        //    _context.SaveChanges();
+        //}
 
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
