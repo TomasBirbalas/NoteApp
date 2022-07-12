@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NoteApp.Business.Services;
 using NoteApp.Repository.DbContexts;
 
 namespace NoteApp.WebAPI.Controllers
@@ -10,9 +11,15 @@ namespace NoteApp.WebAPI.Controllers
     {
         private readonly NoteAppContext _context;
 
-        public NoteAppController(NoteAppContext context)
+        private readonly UserServices _userServices;
+        private readonly CategoryServices _categoryServices;
+
+        public NoteAppController(NoteAppContext context, UserServices user, CategoryServices category)
         {
             _context = context;
+
+            _userServices = user;
+            _categoryServices = category;
         }
 
         [HttpGet("notes"), Authorize]
@@ -26,7 +33,6 @@ namespace NoteApp.WebAPI.Controllers
             }
 
             return Ok(notesList);
-        }
-
+        }     
     }
 }
