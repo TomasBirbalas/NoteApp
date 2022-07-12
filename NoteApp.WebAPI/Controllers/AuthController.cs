@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using NoteApp.Repository.Models.DTO;
 
 namespace NoteApp.WebAPI.Controllers
 {
@@ -25,7 +26,7 @@ namespace NoteApp.WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult<User> Register(UserDto request)
+        public ActionResult<string> Register([FromBody] RegisterUserDTO request)
         {
             if (UserAlreadyExist(request.Email))
             {
@@ -37,13 +38,48 @@ namespace NoteApp.WebAPI.Controllers
                 return BadRequest("Incorrect password. Password must contains: At least 8 characters, at least one uppercase letter and at least one special character");
             }
 
+            if(request.Password != request.PasswordConfirmation)
+            {
+                return BadRequest("Password doesnt match");
+            }
+
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User(request.Email, passwordHash, passwordSalt);
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return Ok(user);
+            return Ok("Successfuly registered");
+        }
+
+        [HttpPost("changePassword")]
+        public ActionResult<string> UpdatePassword([FromBody] ChangePasswordDTO request)
+        {
+            var user = _context.Users.Where(u => u.Email == request.Email).FirstOrDefault();
+
+            if (!VerifyPasswordHash(request.CurrentPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                return BadRequest("Wrong username or/and password");
+            }
+
+            if (!PasswordValidation(request.NewPassword))
+            {
+                return BadRequest("Incorrect password. Password must contains: At least 8 characters, at least one uppercase letter and at least one special character");
+            }
+
+            if (request.NewPassword != request.PasswordConfirmation)
+            {
+                return BadRequest("Password doesnt match");
+            }
+
+            CreatePasswordHash(request.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _context.Update(user);
+            _context.SaveChanges();
+
+            return Ok("Usser Password is changed");
         }
 
         [HttpPost("login")]
