@@ -29,12 +29,15 @@ namespace NoteApp.Business.Services
             _context.SaveChanges();
         }
 
-        public void CreateNewNote(string title, string content, bool status)
+        public Note CreateNewNote(string title, string content, bool status)
         {
             var user = GetCurrentUser();
             var newNote = new Note(title, content, status);
             user.NotesList.Add(newNote);
+            _context.Add(newNote);
             _context.SaveChanges();
+
+            return newNote;
         }
 
         public User GetCurrentUser()

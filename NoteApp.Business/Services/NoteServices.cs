@@ -12,7 +12,7 @@ using System.Web.Http;
 
 namespace NoteApp.Business.Services
 {
-    public class NoteServices
+    public class NoteServices : INoteServices
     {
         private readonly NoteAppContext _context;
 
@@ -36,7 +36,7 @@ namespace NoteApp.Business.Services
             {
                 currentNote.Title = title;
             }
-            if(content != null)
+            if (content != null)
             {
                 currentNote.Content = content;
             }
@@ -48,6 +48,12 @@ namespace NoteApp.Business.Services
             var currentNote = GetNoteById(noteId);
             _context.Remove(currentNote);
             _context.SaveChanges();
+        }
+
+        public List<Note> GetAllNotesByUser(Guid userId)
+        {
+            var listOfNotes = _context.Notes.Where(n => n.UserId == userId).ToList();
+            return listOfNotes;
         }
 
         public List<Note> FilterNotesByTitle(string title, Guid userId)
@@ -62,7 +68,7 @@ namespace NoteApp.Business.Services
         {
             var filteredNotes = _context.Notes
                 .Include(n => n.CategoriesList)
-                .Where(c => c.CategoriesList.Any(category => category.Title == categoryTitle)  && c.UserId == userId)
+                .Where(c => c.CategoriesList.Any(category => category.Title == categoryTitle) && c.UserId == userId)
                 .ToList();
 
             return filteredNotes;
