@@ -16,6 +16,7 @@ namespace NoteApp.Repository.Entities.NoteEntity
 
         [Required]
         public string Title { get; set; }
+        public byte[] Data { get; set; }
 
         [Required]
         public string Url { get; set; }
