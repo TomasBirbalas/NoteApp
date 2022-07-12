@@ -12,9 +12,9 @@ namespace NoteApp.WebAPI.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserServices _userServices;
+        private readonly IUserService _userServices;
 
-        public UserController(IUserServices user, INoteServices note)
+        public UserController(IUserService user, INoteService note)
         {
             _userServices = user;
         }

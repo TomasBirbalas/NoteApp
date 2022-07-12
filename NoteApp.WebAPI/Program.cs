@@ -17,9 +17,9 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IDbConfigurations, DbConfigurations>();
 
 //builder.Services.AddHttpClient<NoteServices>();
-builder.Services.AddScoped<IUserServices, UserServices>();
-builder.Services.AddScoped<ICategoryServices, CategoryServices>();
-builder.Services.AddScoped<INoteServices, NoteServices>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<INoteService, NoteService>();
 
 builder.Services.AddDbContext<NoteAppContext>();
 

@@ -9,8 +9,8 @@ namespace NoteApp.WebAPI.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryServices _categoryServices;
-        public CategoryController(ICategoryServices category)
+        private readonly ICategoryService _categoryServices;
+        public CategoryController(ICategoryService category)
         {
             _categoryServices = category;
         }

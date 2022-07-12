@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace NoteApp.Business.Services
 {
-    public class CategoryServices : ICategoryServices
+    public class CategoryService : ICategoryService
     {
         private readonly NoteAppContext _context;
 
-        public CategoryServices(NoteAppContext context)
+        public CategoryService(NoteAppContext context)
         {
             _context = context;
         }
