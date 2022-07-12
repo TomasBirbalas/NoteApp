@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using NoteApp.Business.Interfaces;
 using NoteApp.Repository.DbContexts;
 using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
@@ -15,10 +16,22 @@ namespace NoteApp.Business.Services
     public class NoteServices : INoteServices
     {
         private readonly NoteAppContext _context;
+        private readonly IUserServices _userServices;
 
-        public NoteServices(NoteAppContext context)
+        public NoteServices(NoteAppContext context, IUserServices user)
         {
             _context = context;
+            _userServices = user;
+        }
+        public Note CreateNewNote(string title, string content, bool status)
+        {
+            var user = _userServices.GetCurrentUser();
+            var newNote = new Note(title, content, status);
+            user.NotesList.Add(newNote);
+            _context.Add(newNote);
+            _context.SaveChanges();
+
+            return newNote;
         }
         public void AddCategoryToNote(Guid noteId, Category category)
         {
@@ -50,22 +63,25 @@ namespace NoteApp.Business.Services
             _context.SaveChanges();
         }
 
-        public List<Note> GetAllNotesByUser(Guid userId)
+        public List<Note> GetAllNotesByUser()
         {
+            var userId = _userServices.GetCurrentUserId();
             var listOfNotes = _context.Notes.Where(n => n.UserId == userId).ToList();
             return listOfNotes;
         }
 
-        public List<Note> FilterNotesByTitle(string title, Guid userId)
+        public List<Note> FilterNotesByTitle(string title)
         {
+            var userId = _userServices.GetCurrentUserId();
             var filteredNotes = _context.Notes
-                .Where(c => c.Title == title && c.UserId == userId)
-                .ToList();
+            .Where(c => c.Title == title && c.UserId == userId)
+            .ToList();
 
             return filteredNotes;
         }
-        public List<Note> FilterNotesByCategory(string categoryTitle, Guid userId)
+        public List<Note> FilterNotesByCategory(string categoryTitle)
         {
+            var userId = _userServices.GetCurrentUserId();
             var filteredNotes = _context.Notes
                 .Include(n => n.CategoriesList)
                 .Where(c => c.CategoriesList.Any(category => category.Title == categoryTitle) && c.UserId == userId)

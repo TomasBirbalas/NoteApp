@@ -1,4 +1,5 @@
-﻿using NoteApp.Repository.DbContexts;
+﻿using NoteApp.Business.Interfaces;
+using NoteApp.Repository.DbContexts;
 using NoteApp.Repository.Entities;
 using System;
 using System.Collections.Generic;

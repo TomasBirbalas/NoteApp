@@ -1,6 +1,6 @@
 ﻿using NoteApp.Repository.Entities;
 
-namespace NoteApp.Business.Services
+namespace NoteApp.Business.Interfaces
 {
     public interface ICategoryServices
     {

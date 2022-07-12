@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using NoteApp.Business.Interfaces;
 using NoteApp.Repository.DbContexts;
 using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
@@ -19,7 +20,7 @@ namespace NoteApp.Business.Services
             _httpContext = httpContext;
         }
 
-        public void AddUserDetails(string name, string surname, Gender gender, DateTime dob)
+        public string AddUserDetails(string name, string surname, Gender gender, DateTime dob)
         {
             Guid userId = GetCurrentUserId();
             var userDetails = new UserDetails(name, surname, gender, dob);
@@ -27,19 +28,9 @@ namespace NoteApp.Business.Services
 
             _context.Add(userDetails);
             _context.SaveChanges();
+
+            return "Successfully added";
         }
-
-        public Note CreateNewNote(string title, string content, bool status)
-        {
-            var user = GetCurrentUser();
-            var newNote = new Note(title, content, status);
-            user.NotesList.Add(newNote);
-            _context.Add(newNote);
-            _context.SaveChanges();
-
-            return newNote;
-        }
-
         public User GetCurrentUser()
         {
             Guid userId = GetCurrentUserId();
@@ -50,8 +41,7 @@ namespace NoteApp.Business.Services
 
             return user;
         }
-
-        private Guid GetCurrentUserId()
+        public Guid GetCurrentUserId()
         {
             string? userId = _httpContext.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
