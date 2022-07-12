@@ -6,7 +6,7 @@ using NoteApp.Repository.Entities.NoteEntity;
 using NoteApp.Repository.Models;
 using System.Security.Claims;
 
-namespace NoteApp.Business
+namespace NoteApp.Business.Services
 {
     public class UserServices : IUserServices
     {
