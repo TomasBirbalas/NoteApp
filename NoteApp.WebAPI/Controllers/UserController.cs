@@ -19,10 +19,13 @@ namespace NoteApp.WebAPI.Controllers
             _userServices = user;
         }
         [HttpPost("AddDetails"), Authorize]
-        public ActionResult DoSomething(string name, string surname, Gender gen, DateTime dob)
+        public async Task<ActionResult> AddDetailsToUser(string name, string surname, Gender gen, DateTime dob)
         {
-            var result = _userServices.AddUserDetails(name, surname, gen, dob);
-
+            var result = "";
+            await Task.Run(() =>
+            {
+                result = _userServices.AddUserDetails(name, surname, gen, dob);
+            });
             return Ok(result);
         }
     }
