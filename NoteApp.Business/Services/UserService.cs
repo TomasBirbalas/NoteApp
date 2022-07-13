@@ -31,6 +31,16 @@ namespace NoteApp.Business.Services
 
             return "Successfully added";
         }
+        public List<Note> GetAllNotesByUser()
+        {
+            var userId = GetCurrentUserId();
+            var listOfNotes = _context.Notes
+                .Include(n => n.CategoriesList)
+                .Include(n => n.Images)
+                .Where(n => n.UserId == userId)
+                .ToList();
+            return listOfNotes;
+        }
         public User GetCurrentUser()
         {
             Guid userId = GetCurrentUserId();

@@ -28,5 +28,19 @@ namespace NoteApp.WebAPI.Controllers
             });
             return Ok(result);
         }
+        [HttpGet("Notes"), Authorize]
+        public async Task<IActionResult> GetAllNotesByUser()
+        {
+            var notesList = new List<Note>();
+            await Task.Run(() =>
+            {
+                notesList = _userServices.GetAllNotesByUser();
+            });
+            if (notesList.Count == 0)
+            {
+                return NotFound("Not fount");
+            }
+            return Ok(notesList);
+        }
     }
 }

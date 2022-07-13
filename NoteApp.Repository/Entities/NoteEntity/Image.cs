@@ -17,12 +17,6 @@ namespace NoteApp.Repository.Entities.NoteEntity
         [Required]
         public string Title { get; set; }
         public byte[] Data { get; set; }
-
-        [Required]
-        public string Url { get; set; }
-
-        [Required]
-        public string Alt { get; set; }
         public DateTime PostedAt { get; set; }
 
         [Required]
@@ -30,12 +24,11 @@ namespace NoteApp.Repository.Entities.NoteEntity
         public Guid NoteId { get; set; }
         public Note Note { get; set; }
 
-        public Image(string title, string url, string alt)
+        public Image(string title, byte[] data)
         {
             Id = Guid.NewGuid();
             Title = title;
-            Url = url;
-            Alt = alt;
+            Data = data;
             PostedAt = DateTime.Now;
         }
     }
