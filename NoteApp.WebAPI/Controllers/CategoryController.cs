@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Business.Interfaces;
+using NoteApp.Repository.Entities.NoteEntity;
 
 namespace NoteApp.WebAPI.Controllers
 {
