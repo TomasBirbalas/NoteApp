@@ -96,5 +96,29 @@ namespace NoteApp.Business.Services
             var currentNote = _context.Notes.Where(n => n.Id == noteId).First();
             return currentNote;
         }
+        public string AddImageToTheNote(Guid noteId, string imagePath, string title)
+        {
+            var note = _context?.Notes?.Find(noteId);
+            if (note == null)
+            {
+                return "Error: note not found.";
+            }
+            var buffer = ConvertImageToBinary(imagePath);
+            var image = new Image(title, buffer);
+            note.Images.Add(image);
+            _context.Images.Add(image);
+            _context.SaveChanges();
+            return "Success: image added.";
+        }
+        private byte[] ConvertImageToBinary(string imagePath)
+        {
+            FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+            byte[] buffer = new byte[fileStream.Length];
+            fileStream.Read(buffer, 0, (int)fileStream.Length);
+            fileStream.Close();
+            return buffer;
+        }
+
+
     }
 }
