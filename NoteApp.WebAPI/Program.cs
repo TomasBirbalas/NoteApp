@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NoteApp.Business.Interfaces;
@@ -95,5 +94,4 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "api/{controller=Home}/{action=Index}/{id?}");
-
 app.Run();
