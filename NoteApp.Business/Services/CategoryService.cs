@@ -1,6 +1,8 @@
-﻿using NoteApp.Business.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using NoteApp.Business.Interfaces;
 using NoteApp.Repository.DbContexts;
 using NoteApp.Repository.Entities;
+using NoteApp.Repository.Entities.NoteEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,38 +14,59 @@ namespace NoteApp.Business.Services
     public class CategoryService : ICategoryService
     {
         private readonly NoteAppContext _context;
+        private readonly IUserService _userServices;
 
-        public CategoryService(NoteAppContext context)
+        public CategoryService(NoteAppContext context, IUserService user)
         {
             _context = context;
+            _userServices = user;
         }
 
-        public void CreateNewCategory(string title)
+        public bool CreateNewCategory(string title)
         {
             var category = new Category(title);
             _context.Add(category);
             _context.SaveChanges();
+
+            return true;
         }
 
-        public void ChangeCategory(Category category, string title)
+        public bool ChangeCategory(Guid categoryId, string newTitle)
         {
-            var currentCategory = _context.Categories.Where(c => c.Id == category.Id).FirstOrDefault();
+            var userId = _userServices.GetCurrentUserId();
+            var currentCategory = _context.Categories
+                .Where(c => c.Id == categoryId && c.UserId == userId)
+                .FirstOrDefault();
+
             if (currentCategory != null)
             {
-                category.Title = title;
+                currentCategory.Title = newTitle;
                 _context.SaveChanges();
             }
+            return true;
         }
-        public void RemoveCategory(Category category)
+        public bool RemoveCategory(Guid categoryId)
         {
+            var userId = _userServices.GetCurrentUserId();
             var currentCategory = _context.Categories
-                .Where(c => c.Id == category.Id)
+                .Where(c => c.Id == categoryId && c.UserId == userId)
                 .FirstOrDefault();
             if (currentCategory != null)
             {
                 _context.Categories.Remove(currentCategory);
                 _context.SaveChanges();
             }
+            return true;
+        }
+        public List<Note> FilterNotesByCategory(string categoryTitle)
+        {
+            var userId = _userServices.GetCurrentUserId();
+            var filteredNotes = _context.Notes
+                .Include(n => n.CategoriesList)
+                .Where(c => c.CategoriesList.Any(category => category.Title == categoryTitle) && c.UserId == userId)
+                .ToList();
+
+            return filteredNotes;
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using NoteApp.Repository.Entities;
+using NoteApp.Repository.Entities.NoteEntity;
 
 namespace NoteApp.Business.Interfaces
 {
     public interface ICategoryService
     {
-        void ChangeCategory(Category category, string title);
-        void CreateNewCategory(string title);
-        void RemoveCategory(Category category);
+        bool ChangeCategory(Guid categoryId, string newTitle);
+        bool CreateNewCategory(string title);
+        bool RemoveCategory(Guid categoryId);
+        List<Note> FilterNotesByCategory(string categoryTitle);
     }
 }

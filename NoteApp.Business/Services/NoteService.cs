@@ -23,7 +23,7 @@ namespace NoteApp.Business.Services
             _context = context;
             _userServices = user;
         }
-        public Note CreateNewNote(string title, string content, bool status)
+        public bool CreateNewNote(string title, string content, bool status)
         {
             var user = _userServices.GetCurrentUser();
             var newNote = new Note(title, content, status);
@@ -31,20 +31,28 @@ namespace NoteApp.Business.Services
             _context.Add(newNote);
             _context.SaveChanges();
 
-            return newNote;
+            return true;
         }
-        public void AddCategoryToNote(Guid noteId, Category category)
+        public bool AddCategoryToNote(Guid noteId, string categoryTitle)
         {
             var currentNote = GetNoteById(noteId);
-            var findCategory = _context.Categories.Where(c => c.Id == category.Id).First();
-
-            currentNote.CategoriesList.Add(category);
+            var findCategory = _context.Categories.Where(c => c.Title == categoryTitle).First();
+            currentNote.CategoriesList.Add(findCategory);
             _context.Notes.Update(currentNote);
             _context.SaveChanges();
+
+            return true;
         }
-        public void EditNote(Guid noteId, string title, string content)
+        public bool EditNote(Guid noteId, string title, string content)
         {
+            var userId = _userServices.GetCurrentUserId();
             var currentNote = GetNoteById(noteId);
+
+            if (currentNote.UserId != userId)
+            {
+                return false;
+            }
+
             if (title != null)
             {
                 currentNote.Title = title;
@@ -55,37 +63,30 @@ namespace NoteApp.Business.Services
             }
             _context.Notes.Update(currentNote);
             _context.SaveChanges();
-        }
-        public void DeleteNote(Guid noteId)
-        {
-            var currentNote = GetNoteById(noteId);
-            _context.Remove(currentNote);
-            _context.SaveChanges();
-        }
 
-        public List<Note> GetAllNotesByUser()
+            return true;
+        }
+        public bool DeleteNote(Guid noteId)
         {
             var userId = _userServices.GetCurrentUserId();
-            var listOfNotes = _context.Notes.Where(n => n.UserId == userId).ToList();
-            return listOfNotes;
+            var currentNote = GetNoteById(noteId);
+
+            if (currentNote.UserId != userId)
+            {
+                return false;
+            }
+            _context.Remove(currentNote);
+            _context.SaveChanges();
+
+            return true;
         }
 
         public List<Note> FilterNotesByTitle(string title)
         {
             var userId = _userServices.GetCurrentUserId();
             var filteredNotes = _context.Notes
-            .Where(c => c.Title == title && c.UserId == userId)
+            .Where(c => c.Title.ToUpper().StartsWith(title.ToUpper()) && c.UserId == userId)
             .ToList();
-
-            return filteredNotes;
-        }
-        public List<Note> FilterNotesByCategory(string categoryTitle)
-        {
-            var userId = _userServices.GetCurrentUserId();
-            var filteredNotes = _context.Notes
-                .Include(n => n.CategoriesList)
-                .Where(c => c.CategoriesList.Any(category => category.Title == categoryTitle) && c.UserId == userId)
-                .ToList();
 
             return filteredNotes;
         }
