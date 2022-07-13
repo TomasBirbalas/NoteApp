@@ -15,19 +15,53 @@ namespace NoteApp.WebAPI.Controllers
         {
             _noteServices = note;
         }
+        [HttpGet, Authorize]
+        public async Task<IActionResult> GetNotesByTitle([FromBody] string title)
+        {
+            List<Note> result = new List<Note>();
+
+            await Task.Run(() =>
+            {
+                result = _noteServices.FilterNotesByTitle(title);
+            });
+
+            if (result.Count > 0)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("Note not found");
+            }
+        }
 
         [HttpPost, Authorize]
-        public IActionResult GetAllNotes(string title, string content, bool isPublic)
+        public async Task<IActionResult> CreateNewNote(string title, string content, bool isPublic)
         {
-            var newNote = _noteServices.CreateNewNote(title, content, isPublic);
+            bool result = false;
+            await Task.Run(() =>
+            {
+                result = _noteServices.CreateNewNote(title, content, isPublic);
+            });
 
-            return Ok($"Note created {newNote.Title}");
+            if (result)
+            {
+                return Ok("Note is created");
+            }
+            else
+            {
+                return BadRequest("Failed");
+            }
         }
 
         [HttpPut("{id}"), Authorize]
-        public IActionResult UpdateNote(Guid id, string title, string content)
+        public async Task<IActionResult> UpdateNote(Guid id, string title, string content)
         {
-            var result = _noteServices.EditNote(id, title, content);
+            bool result = false;
+            await Task.Run(() =>
+            {
+                result = _noteServices.EditNote(id, title, content);
+            });
 
             if (result)
             {
@@ -38,11 +72,33 @@ namespace NoteApp.WebAPI.Controllers
                 return BadRequest("Note is not your");
             }
         }
+        [HttpPut("{id}/category"), Authorize]
+        public async Task<IActionResult> AddCategory(Guid id, [FromBody] string categoryTitle)
+        {
+            bool result = false;
+            await Task.Run(() =>
+            {
+                result = _noteServices.AddCategoryToNote(id, categoryTitle);
+            });
+
+            if (result)
+            {
+                return Ok("Category successfully added");
+            }
+            else
+            {
+                return BadRequest("Category Not found");
+            }
+        }
 
         [HttpDelete("{id}"), Authorize]
-        public IActionResult DeleteNote(Guid id)
+        public async Task<IActionResult> DeleteNote(Guid id)
         {
-            var result = _noteServices.DeleteNote(id);
+            bool result = false;
+            await Task.Run(() =>
+            {
+                result = _noteServices.DeleteNote(id);
+            });
 
             if (result)
             {
