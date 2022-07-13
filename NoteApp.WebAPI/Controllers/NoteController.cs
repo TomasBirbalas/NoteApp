@@ -53,6 +53,20 @@ namespace NoteApp.WebAPI.Controllers
                 return BadRequest("Failed");
             }
         }
+        [HttpPost("{id}"), Authorize]
+        public async Task<IActionResult> AddImageToNote(Guid id, string path, string title)
+        {
+            bool result = false;
+            await Task.Run(() =>
+            {
+                result = _noteServices.AddImageToTheNote(id, path, title);
+            });
+            if (!result)
+            {
+                return BadRequest("Image cant be added");
+            }
+            return Ok("Success: image added");
+        }
 
         [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> UpdateNote(Guid id, string title, string content)

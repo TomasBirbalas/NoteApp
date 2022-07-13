@@ -96,19 +96,24 @@ namespace NoteApp.Business.Services
             var currentNote = _context.Notes.Where(n => n.Id == noteId).First();
             return currentNote;
         }
-        public string AddImageToTheNote(Guid noteId, string imagePath, string title)
+        public bool AddImageToTheNote(Guid noteId, string imagePath, string title)
         {
-            var note = _context?.Notes?.Find(noteId);
+            var userId = _userServices.GetCurrentUserId();
+            var note = _context.Notes?
+                .Where(n => n.Id == noteId && n.UserId == userId)
+                .FirstOrDefault();
+
             if (note == null)
             {
-                return "Error: note not found.";
+                return false;
             }
             var buffer = ConvertImageToBinary(imagePath);
             var image = new Image(title, buffer);
             note.Images.Add(image);
-            _context.Images.Add(image);
+
+            _context.Add(image);
             _context.SaveChanges();
-            return "Success: image added.";
+            return true;
         }
         private byte[] ConvertImageToBinary(string imagePath)
         {
@@ -118,7 +123,5 @@ namespace NoteApp.Business.Services
             fileStream.Close();
             return buffer;
         }
-
-
     }
 }
