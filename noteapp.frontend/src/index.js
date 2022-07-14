@@ -1,6 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import Header from './Components/header-component/header';
+import App from "./app";
 
-ReactDOM.render(<Header />, document.getElementById('root'));
+import "./stylesheets/css/main.min.css";
+
+ReactDOM.render(<App />, document.getElementById("root"));

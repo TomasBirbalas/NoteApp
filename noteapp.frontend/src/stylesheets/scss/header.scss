@@ -1,0 +1,69 @@
+// Variables
+$primary-color: rgba(54, 54, 54, 1);
+$light: rgba(255, 255, 255, 1);
+$secondary-color: rgba(229, 229, 229, 1);
+$third-color: rgba(204, 164, 59, 1);
+
+header {
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 5%;
+  background-color: $secondary-color;
+
+  .logo {
+    display: flex;
+    align-items: center;
+
+    .logo-title {
+      display: flex;
+      flex-direction: column;
+
+      margin-left: 1em;
+
+      span.app-logo-title {
+        font-size: 2em;
+      }
+      span.app-logo-subtitle {
+        font-size: 0.8em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+    }
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    min-width: 450px;
+    position: relative;
+
+    input {
+      background-color: transparent;
+      font-size: 1em;
+      padding: 0.6em 1em;
+      width: 100%;
+      border-bottom: 1px solid $primary-color;
+    }
+    i {
+      position: absolute;
+      right: 1em;
+      font-size: 1.2em;
+    }
+  }
+  .my-account {
+    i {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.4em;
+      color: $secondary-color;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: rgba($primary-color, 0.3);
+    }
+  }
+}
