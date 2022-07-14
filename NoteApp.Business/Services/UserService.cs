@@ -39,6 +39,7 @@ namespace NoteApp.Business.Services
                 .Include(n => n.Images)
                 .Where(n => n.UserId == userId)
                 .ToList();
+
             return listOfNotes;
         }
         public User GetCurrentUser()

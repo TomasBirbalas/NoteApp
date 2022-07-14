@@ -84,21 +84,21 @@ namespace NoteApp.Repository.Migrations
                 name: "CategoryNote",
                 columns: table => new
                 {
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NoteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CategoriesListId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NotesListId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryNote", x => new { x.CategoryId, x.NoteId });
+                    table.PrimaryKey("PK_CategoryNote", x => new { x.CategoriesListId, x.NotesListId });
                     table.ForeignKey(
                         name: "FK_CategoryNote_Categories_CategoryId",
-                        column: x => x.CategoryId,
+                        column: x => x.CategoriesListId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CategoryNote_Notes_NoteId",
-                        column: x => x.NoteId,
+                        column: x => x.NotesListId,
                         principalTable: "Notes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -127,9 +127,9 @@ namespace NoteApp.Repository.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryNote_NoteId",
+                name: "IX_CategoryNote_NotesListId",
                 table: "CategoryNote",
-                column: "NoteId");
+                column: "NotesListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_NoteId",

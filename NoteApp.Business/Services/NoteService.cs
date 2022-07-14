@@ -38,7 +38,8 @@ namespace NoteApp.Business.Services
             var currentNote = GetNoteById(noteId);
             var findCategory = _context.Categories.Where(c => c.Title == categoryTitle).First();
             currentNote.CategoriesList.Add(findCategory);
-            _context.Notes.Update(currentNote);
+            findCategory.NotesList.Add(currentNote);
+            _context.Update(findCategory);
             _context.SaveChanges();
 
             return true;
