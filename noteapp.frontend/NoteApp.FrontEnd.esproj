@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.7-alpha">
   <PropertyGroup Label="Globals">
-    <ProjectGuid>78203409-0b16-4b36-9efa-02db40423d39</ProjectGuid>
+    <ProjectGuid>d353e360-b707-4b99-984a-b79f0064c057</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <StartupCommand>set BROWSER=none&amp;&amp;npm start</StartupCommand>
@@ -9,11 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\stylesheets\css\" />
-    <Folder Include="src\stylesheets\" />
-    <Folder Include="src\stylesheets\scss\" />
   </ItemGroup>
   <!-- This target is copied from the ASP.NET SPA template in order to ensure node_modules are in place. -->
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

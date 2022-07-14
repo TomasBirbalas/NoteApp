@@ -1,7 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./stylesheets/css/main.min.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import Header from "./components/header/header";
+import Header from './Components/header-component/header';
 
-ReactDOM.render(<Header />, document.getElementById("root"));
+ReactDOM.render(<Header />, document.getElementById('root'));
