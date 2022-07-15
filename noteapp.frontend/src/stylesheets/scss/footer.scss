@@ -1,0 +1,14 @@
+@import "colors";
+
+footer {
+    display: flex;
+    padding: 0 5%;
+    height: 50px;
+    align-items: center;
+    background-color: $primary-color;
+    color: $light;
+
+    a{
+        color: $third-color;
+    }
+}

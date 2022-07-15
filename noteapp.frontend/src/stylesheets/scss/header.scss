@@ -1,8 +1,5 @@
 // Variables
-$primary-color: rgba(54, 54, 54, 1);
-$light: rgba(255, 255, 255, 1);
-$secondary-color: rgba(229, 229, 229, 1);
-$third-color: rgba(204, 164, 59, 1);
+@import "colors";
 
 header {
   display: flex;
@@ -11,11 +8,11 @@ header {
   align-items: center;
   width: 100%;
   padding: 0 5%;
-  background-color: $secondary-color;
-
+  background-color: $primary-color;
   .logo {
     display: flex;
     align-items: center;
+    color: $light;
 
     .logo-title {
       display: flex;
@@ -27,7 +24,9 @@ header {
         font-size: 2em;
       }
       span.app-logo-subtitle {
-        font-size: 0.8em;
+        font-size: 0.6em;
+        padding-top: 4px;
+        color: $secondary-color;
         text-transform: uppercase;
         letter-spacing: 2px;
       }
@@ -40,12 +39,19 @@ header {
     min-width: 450px;
     position: relative;
 
+    color: rgba($light, 1);
+
     input {
       background-color: transparent;
       font-size: 1em;
       padding: 0.6em 1em;
       width: 100%;
-      border-bottom: 1px solid $primary-color;
+      border-bottom: 1px solid $light;
+      color: rgba($light, 1);
+
+      &::placeholder {
+        color: rgba($light, 0.6);
+      }
     }
     i {
       position: absolute;
@@ -54,16 +60,60 @@ header {
     }
   }
   .my-account {
+    position: relative;
     i {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.4em;
-      color: $secondary-color;
+      position: absolute;
+      font-size: 1.2em;
+      color: $light;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .round {
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background-color: rgba($primary-color, 0.3);
+      border: 2px solid rgba($light, 0.6);
+      background-color: rgba($light, 0.2);
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: $light;
+        right: 0;
+        top: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 7px;
+        z-index: 3;
+      }
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 0px;
+        height: 0px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background-color: $third-color;
+        transition: all .3s ease-in;
+        z-index: 1;
+      }
+      &:hover {
+        cursor: pointer;
+        &::before {
+          width: 48px;
+          height: 48px;
+        }
+      }
     }
   }
 }
