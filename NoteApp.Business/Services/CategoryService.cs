@@ -70,5 +70,11 @@ namespace NoteApp.Business.Services
 
             return filteredNotes;
         }
+        public List<Category> GetAllCategoriesFromDB()
+        {
+            var getAllCategories = _context.Categories.ToList();
+
+            return getAllCategories;
+        }
     }
 }

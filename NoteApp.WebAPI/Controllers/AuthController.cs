@@ -26,7 +26,7 @@ namespace NoteApp.WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult<string> Register([FromBody] RegisterUserDTO request)
+        public ActionResult<string> Register(RegisterUserDTO request)
         {
             if (UserAlreadyExist(request.Email))
             {
