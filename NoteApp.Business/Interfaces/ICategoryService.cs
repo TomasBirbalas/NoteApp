@@ -9,5 +9,6 @@ namespace NoteApp.Business.Interfaces
         bool CreateNewCategory(string title);
         bool RemoveCategory(Guid categoryId);
         List<Note> FilterNotesByCategory(string categoryTitle);
+        List<Category> GetAllCategoriesFromDB();
     }
 }
