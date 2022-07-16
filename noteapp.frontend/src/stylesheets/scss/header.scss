@@ -3,7 +3,7 @@
 
 header {
   display: flex;
-  height: 100px;
+  height: 10vh;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -82,7 +82,7 @@ header {
       background-color: rgba($light, 0.2);
 
       &::after {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         background-color: $light;
@@ -94,7 +94,7 @@ header {
         z-index: 3;
       }
       &::before {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         width: 0px;
@@ -104,7 +104,7 @@ header {
         transform: translate(-50%, -50%);
         border-radius: 50%;
         background-color: $third-color;
-        transition: all .3s ease-in;
+        transition: all 0.3s ease-in;
         z-index: 1;
       }
       &:hover {
