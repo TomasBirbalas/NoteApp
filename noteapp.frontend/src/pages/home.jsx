@@ -22,6 +22,54 @@ function Home() {
                 console.log(error.response);
             });
     }
+    const AddUserDetails = () => {
+        console.log("run");
+
+        axios.post(
+            'https://localhost:7190/api/User/AddDetails', {},
+            {
+                headers: {
+                    "Authorization": 'Bearer ' + cookie,
+                    "content-type": "application/json"
+                  },
+                params: {
+                    name : 'Tomas',
+                    surname : "Birbalas",
+                    gen : 0,
+                    dob : "1991-10-02"
+                }
+            })
+            .then(response => {
+              console.log(response.data);
+
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
+    }
+
+    const FilterNote = () => {
+        console.log("filterNote run");
+
+        axios.get(
+            'https://localhost:7190/api/Note',
+            {
+                headers: {
+                    "Authorization": 'Bearer ' + cookie,
+                    "content-type": "application/json"
+                  },
+                params: {
+                    title : 'Atnaujintas'
+                }
+            })
+            .then(response => {
+              console.log(response.data);
+
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
+    }
 
     const CreateNote = () => {
         console.log("createNote run");
@@ -182,7 +230,7 @@ function Home() {
     const GetCategoriesList = () => {
         console.log("categoriesList run");
         axios.get(
-            `https://localhost:7190/api/Category/`, {},
+            `https://localhost:7190/api/Category/`,
             {
                 headers: {
                     "Authorization": 'Bearer ' + cookie,
@@ -206,6 +254,8 @@ function Home() {
             <div className="welcome">
                 <h1>Helo</h1>
                 {UserNotes()}
+                <button onClick={AddUserDetails}>Add User Details</button>
+                <button onClick={FilterNote}>Filter</button>
                 <button onClick={CreateNote}>Click</button>
                 <button onClick={DeleteNote} value="7D1C2438-5207-4398-9E97-62D971D63C42">Delete Note</button>
                 <button onClick={EditNote} value="D3130B44-D998-44FE-9E96-A1C0F981A8AF">Edit Note</button>
