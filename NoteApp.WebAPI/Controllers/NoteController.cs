@@ -55,7 +55,7 @@ namespace NoteApp.WebAPI.Controllers
         }
 
         [HttpPut("{id}/category"), Authorize]
-        public async Task<IActionResult> AddCategory(Guid id, [FromBody] string categoryTitle)
+        public async Task<IActionResult> AddCategory(Guid id, string categoryTitle)
         {
             bool result = await Task.Run(() => _noteServices.AddCategoryToNote(id, categoryTitle));
 

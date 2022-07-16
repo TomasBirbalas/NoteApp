@@ -17,7 +17,7 @@ namespace NoteApp.WebAPI.Controllers
         }
 
         [HttpGet("notes"), Authorize]
-        public async Task<IActionResult> GetNotesByCategory([FromBody] string title)
+        public async Task<IActionResult> GetNotesByCategory(string title)
         {
             List<Note> result = await Task.Run(() => _categoryServices.FilterNotesByCategory(title));
 
