@@ -1,0 +1,22 @@
+//Font Family
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap");
+
+// Reset
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+}
+a {
+  text-decoration: none;
+  color: unset;
+}
+input {
+  outline: none;
+  border: none;
+}
+
+.main-content {
+  height: 85vh;
+  overflow: hidden;
+}

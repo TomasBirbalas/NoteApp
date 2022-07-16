@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Business.Interfaces;
+using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
 
 namespace NoteApp.WebAPI.Controllers
@@ -15,63 +16,53 @@ namespace NoteApp.WebAPI.Controllers
         {
             _categoryServices = category;
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            List<Category> result = await Task.Run(() => _categoryServices.GetAllCategoriesFromDB());
+            if (result.Count == 0) return BadRequest("No categories");
 
-        [HttpGet("notes"), Authorize]
+            return Ok(result);
+        }
+
+        [HttpGet("notes")]
         public async Task<IActionResult> GetNotesByCategory([FromBody] string title)
         {
-            List<Note> result = new List<Note>();
+            List<Note> result = await Task.Run(() => _categoryServices.FilterNotesByCategory(title));
 
-            await Task.Run(() =>
-            {
-                result = _categoryServices.FilterNotesByCategory(title);
-            });
+            if (result.Count == 0) return BadRequest("Category is empty");
 
-            if (result.Count > 0)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest("Category is empty");
-            }
+            return Ok(result);
         }
 
-        [HttpPost(), Authorize]
-        public IActionResult DisplayAllCategories(string title)
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory(string title)
         {
-            _categoryServices.CreateNewCategory(title);
-            return Ok($"Note created");
+            var result = await Task.Run(() => _categoryServices.CreateNewCategory(title));
+
+            if (!result) return BadRequest("Something goes wrong");
+
+            return Ok($"Successfully created!");
         }
 
-        [HttpPut("{id}"), Authorize]
-        public async Task<IActionResult> EditCategory(Guid id, [FromBody] string newTitle)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditCategory(Guid id, string newTitle)
         {
-            bool result = false;
+            var result = await Task.Run(() => _categoryServices.ChangeCategory(id, newTitle));
 
-            await Task.Run(() =>
-            {
-                result = _categoryServices.ChangeCategory(id, newTitle);
-            });
-            if (!result)
-            {
-                return Ok("Something goes wrong");
-            }
-            return Ok("Successfully updated category");
+            if (!result) return BadRequest("Something goes wrong");
+
+            return Ok("Successfully updated!");
         }
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
-            bool result = false;
+            var result  = await Task.Run(() => _categoryServices.RemoveCategory(id));
 
-            await Task.Run(() =>
-            {
-                result = _categoryServices.RemoveCategory(id);
-            });
-            if (!result)
-            {
-                return Ok("Something goes wrong");
-            }
-            return Ok("Successfully deleted");
+            if (!result) return Ok("Something goes wrong!");
+
+            return Ok("Successfully deleted!");
         }
     }
 }

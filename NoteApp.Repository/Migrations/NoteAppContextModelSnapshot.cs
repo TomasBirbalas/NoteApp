@@ -34,7 +34,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("NotesListId");
 
-                    b.ToTable("CategoryNote");
+                    b.ToTable("CategoryNote", (string)null);
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.Category", b =>
@@ -55,7 +55,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.NoteEntity.Image", b =>
@@ -82,7 +82,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("NoteId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.NoteEntity.Note", b =>
@@ -112,7 +112,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.RefreshToken", b =>
@@ -138,7 +138,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.User", b =>
@@ -161,7 +161,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("NoteApp.Repository.Entities.UserDetails", b =>
@@ -194,7 +194,7 @@ namespace NoteApp.Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDetails");
+                    b.ToTable("UserDetails", (string)null);
                 });
 
             modelBuilder.Entity("CategoryNote", b =>

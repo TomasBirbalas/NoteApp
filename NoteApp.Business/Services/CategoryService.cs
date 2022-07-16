@@ -24,7 +24,9 @@ namespace NoteApp.Business.Services
 
         public bool CreateNewCategory(string title)
         {
+            var userId = _userServices.GetCurrentUserId();
             var category = new Category(title);
+            category.UserId = userId;
             _context.Add(category);
             _context.SaveChanges();
 
@@ -67,6 +69,12 @@ namespace NoteApp.Business.Services
                 .ToList();
 
             return filteredNotes;
+        }
+        public List<Category> GetAllCategoriesFromDB()
+        {
+            var getAllCategories = _context.Categories.ToList();
+
+            return getAllCategories;
         }
     }
 }
