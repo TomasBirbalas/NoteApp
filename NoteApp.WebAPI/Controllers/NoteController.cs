@@ -15,7 +15,8 @@ namespace NoteApp.WebAPI.Controllers
         {
             _noteServices = note;
         }
-        [HttpGet, Authorize]
+        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> GetNotesByTitle(string title)
         {
             var result = await Task.Run(() => _noteServices.FilterNotesByTitle(title));
@@ -25,7 +26,7 @@ namespace NoteApp.WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         public async Task<IActionResult> CreateNewNote(string title, string content, bool isPublic)
         {
             var result = await Task.Run(() => _noteServices.CreateNewNote(title, content, isPublic));
@@ -34,7 +35,7 @@ namespace NoteApp.WebAPI.Controllers
 
             return Ok("Note is created");
         }
-        [HttpPost("{id}"), Authorize]
+        [HttpPost("{id}/image")]
         public async Task<IActionResult> AddImageToNote(Guid id, string path, string title)
         {
             var result = await Task.Run(() => _noteServices.AddImageToTheNote(id, path, title));
@@ -44,17 +45,17 @@ namespace NoteApp.WebAPI.Controllers
             return Ok("Success: image added");
         }
 
-        [HttpPut("{id}"), Authorize]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateNote(Guid id, string title, string content)
         {
             var result = await Task.Run(() => _noteServices.EditNote(id, title, content));
 
-            if (result!) return BadRequest("Note is not your");
+            if (!result) return BadRequest("Note is not your");
 
             return Ok("Successfully updated");
         }
 
-        [HttpPut("{id}/category"), Authorize]
+        [HttpPut("{id}/category")]
         public async Task<IActionResult> AddCategory(Guid id, [FromBody] string categoryTitle)
         {
             bool result = await Task.Run(() => _noteServices.AddCategoryToNote(id, categoryTitle));
@@ -64,7 +65,7 @@ namespace NoteApp.WebAPI.Controllers
             return Ok("Category successfully added");
         }
 
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(Guid id)
         {
             var result = await Task.Run(() => _noteServices.DeleteNote(id));

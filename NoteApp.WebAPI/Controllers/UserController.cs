@@ -19,7 +19,8 @@ namespace NoteApp.WebAPI.Controllers
         {
             _userServices = user;
         }
-        [HttpPost("AddDetails"), Authorize]
+        [Authorize]
+        [HttpPost("AddDetails")]
         public async Task<ActionResult> AddDetailsToUser(string name, string surname, Gender gen, DateTime dob)
         {
             var result = await Task.Run(() => _userServices.AddUserDetails(name, surname, gen, dob));
@@ -28,7 +29,7 @@ namespace NoteApp.WebAPI.Controllers
 
             return Ok(result);
         }
-        [HttpGet("Notes"), Authorize]
+        [HttpGet("Notes")]
         public async Task<IActionResult> GetAllNotesByUser()
         {
             List<NoteDTO> converted;

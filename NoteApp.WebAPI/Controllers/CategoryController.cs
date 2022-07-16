@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Business.Interfaces;
+using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
 
 namespace NoteApp.WebAPI.Controllers
@@ -15,8 +16,17 @@ namespace NoteApp.WebAPI.Controllers
         {
             _categoryServices = category;
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            List<Category> result = await Task.Run(() => _categoryServices.GetAllCategoriesFromDB());
+            if (result.Count == 0) return BadRequest("No categories");
 
-        [HttpGet("notes"), Authorize]
+            return Ok(result);
+        }
+
+        [HttpGet("notes")]
         public async Task<IActionResult> GetNotesByCategory([FromBody] string title)
         {
             List<Note> result = await Task.Run(() => _categoryServices.FilterNotesByCategory(title));
@@ -26,7 +36,7 @@ namespace NoteApp.WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost(), Authorize]
+        [HttpPost]
         public async Task<IActionResult> CreateCategory(string title)
         {
             var result = await Task.Run(() => _categoryServices.CreateNewCategory(title));
@@ -36,8 +46,8 @@ namespace NoteApp.WebAPI.Controllers
             return Ok($"Successfully created!");
         }
 
-        [HttpPut("{id}"), Authorize]
-        public async Task<IActionResult> EditCategory(Guid id, [FromBody] string newTitle)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditCategory(Guid id, string newTitle)
         {
             var result = await Task.Run(() => _categoryServices.ChangeCategory(id, newTitle));
 
@@ -45,7 +55,7 @@ namespace NoteApp.WebAPI.Controllers
 
             return Ok("Successfully updated!");
         }
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
             var result  = await Task.Run(() => _categoryServices.RemoveCategory(id));
