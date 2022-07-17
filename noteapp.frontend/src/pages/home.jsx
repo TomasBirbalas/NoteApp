@@ -1,6 +1,8 @@
 import React from 'react'
 import GetCookie from '../hooks/getCookie'
-import { CreateNote } from '../api/noteApi'
+import Note from '../components/note';
+import { UserNotes } from '../api/userApi'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function Home() {
     const cookie = GetCookie('token');
@@ -8,12 +10,14 @@ function Home() {
     <div>
         {(cookie) ? (
             <div className="welcome">
-                <h1>Helo</h1>
-                <button onClick={CreateNote}>Click</button>
+                <Note />
             </div>
         ) : (
             <h1>Please login</h1>
         )}
+
+
+
     </div>
   )
 }

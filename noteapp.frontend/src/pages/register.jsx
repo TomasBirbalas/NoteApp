@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import { Register } from '../api/authApi'
 
 import RegisterForm from '../components/registerForm'
 import '../stylesheets/css/login.min.css'
@@ -11,7 +11,7 @@ import image4 from '../Images/randomImages/4.jpg'
 import image5 from '../Images/randomImages/5.jpg'
 
 
-function Register() {
+function RegisterUser() {
     const imageArray = [
         image1,
         image2,
@@ -22,19 +22,6 @@ function Register() {
 
     let random = imageArray[Math.floor(Math.random() * imageArray.length)]
 
-    const Register = details => {
-        console.log(details);
-
-        axios.post(
-            'https://localhost:7190/api/Auth/register', {
-              email : details.email,
-              password : details.password,
-              passwordConfirmation : details.confirmPassword,
-            })
-            .then(response => {
-              console.log(response.data);
-            });
-    }
   return (
     <div className="login-page">
         <img src={random} alt="image" className="backgroundImage"/>
@@ -43,4 +30,4 @@ function Register() {
   )
 }
 
-export default Register
+export default RegisterUser

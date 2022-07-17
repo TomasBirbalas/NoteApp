@@ -2,8 +2,9 @@ import GetCookie from '../hooks/getCookie'
 import axios from 'axios'
 
 const cookie = GetCookie('token');
-const mainHost = "https://localhost:7190/api/User";
+const mainHost = "https://localhost:7190/api/User/";
 const UserNotes = () => {
+
     console.log("userNote run");
 
     axios.get(

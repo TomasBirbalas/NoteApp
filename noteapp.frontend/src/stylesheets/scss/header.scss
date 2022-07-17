@@ -115,5 +115,26 @@ header {
         }
       }
     }
+    .user-card {
+      display: none;
+    }
+  }
+  .my-account.logedin {
+    .round::after {
+      background-color: #6bf76b;
+      width: 14px;
+      height: 14px;
+    }
+    .account-symbol:hover .user-card {
+      display: block;
+    }
+    .user-card {
+      display: block;
+      position: absolute;
+      right: -2em;
+      top: 52px;
+      padding: 2em 4em;
+      background-color: rgba($light, 1);
+    }
   }
 }

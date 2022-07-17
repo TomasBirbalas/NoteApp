@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import SetCookie from '../hooks/setCookie'
-import RemoveCookie from '../hooks/removeCookie'
+import GetCookie from '../hooks/getCookie'
+import { Login } from '../api/authApi'
+import { Navigate } from 'react-router-dom'
+
 
 import "../stylesheets/css/login.min.css"
 
@@ -20,35 +20,20 @@ const imageArray = [
     image4,
     image5
 ]
+const cookies = GetCookie('token');
 
-function Login() {
+function LoginUser() {
     let random = imageArray[Math.floor(Math.random() * imageArray.length)]
     
-    const [error, setError] = useState("");
-    const Login = details => {
-        console.log(details);
-
-        axios.post(
-            'https://localhost:7190/api/Auth/login', {
-              email : details.email,
-              password : details.password,
-            })
-            .then(response => {
-              console.log(response.data);
-              RemoveCookie('token');
-              SetCookie('token', response.data);
-            })
-            .catch(function (error) {
-                setError(error.response.data);
-                console.log(error.response.data);
-            });
-    }
+    // const [error, setError] = useState("");
   return (
     <div className="login-page">
         <img src={random} alt="image" className="backgroundImage"/>
-        <LoginForm Login={Login} error={error}/>
+        {/* <LoginForm Login={Login} error={error}/> */}
+        <LoginForm Login={Login}/>
+        {cookies ? <Navigate to="/"/> : console.log() }
     </div>
   )
 }
 
-export default Login
+export default LoginUser

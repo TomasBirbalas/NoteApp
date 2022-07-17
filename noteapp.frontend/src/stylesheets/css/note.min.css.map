@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,WAAW,AAAC,CACV,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,GAAG,CACnB,SAAS,CAAE,IAAI,CAUhB,AAbD,AAKE,WALS,CAKT,UAAU,AAAC,CACT,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,KAAK,CAAE,kBAAkB,CACzB,gBAAgB,CCVJ,kBAAmB,CDW/B,OAAO,CAAE,OAAO,CAChB,MAAM,CAAE,GAAG,CACZ",
+    "sources": [
+        "../scss/note.scss",
+        "../scss/_colors.scss"
+    ],
+    "names": [],
+    "file": "note.min.css"
+}

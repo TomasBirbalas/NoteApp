@@ -13,7 +13,7 @@ function LoginForm( {Login, error} ) {
   return (
     <form className="form" onSubmit={submitHandler}>
         <h1>Please Login</h1>
-        {(error != "") ? (<div className="error">{error}</div>) : ""}
+        {(error) ? (<div className="error">{error}</div>) : ""}
         <div className="input">
             <input id="userName" className="input-wrap" type="text" name="email" placeholder=" " onChange={e => setDetails({...details, email: e.target.value})} value={details.email} required/>
             <label htmlFor="email" className="float-label">Email</label>

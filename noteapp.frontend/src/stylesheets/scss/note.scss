@@ -1,0 +1,16 @@
+@import "colors";
+
+.note-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .note-card {
+    display: flex;
+    flex-direction: column;
+    width: calc(33.33% - 2em);
+    background-color: rgba($primary-color, 0.1);
+    padding: 1em 2em;
+    margin: 1em;
+  }
+}
