@@ -29,6 +29,15 @@ namespace NoteApp.WebAPI.Controllers
 
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<ActionResult> GetUserDetails()
+        {
+            var result = await Task.Run(() => _userServices.GetUser());
+
+            if (result == null) return BadRequest("UserDetails not found");
+
+            return Ok(result);
+        }
         [HttpGet("Notes")]
         public async Task<IActionResult> GetAllNotesByUser()
         {
