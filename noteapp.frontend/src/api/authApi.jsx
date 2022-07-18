@@ -12,7 +12,7 @@ const Login = (details) => {
             password : details.password,
         })
         .then(response => {
-
+            console.log(response.data);
             RemoveCookie('token');
             SetCookie('token', response.data);
             if(response.status === 200){

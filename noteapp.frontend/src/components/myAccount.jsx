@@ -5,33 +5,32 @@ import RemoveCookie from '../hooks/removeCookie';
 
 function MyAccountMenu() {
 
-  const cookie = GetCookie('token');
+  let cookie = GetCookie('token');
   const [data, setData] = useState([]);
   const classes = ["my-account"];
   const userCardClass = ["user-card"];
-
+  
   useEffect(() => {
-    console.log("userNote run");
-
-    axios.get(
-      "https://localhost:7190/api/User/",
-      {
-          headers: {
-              "Authorization": 'Bearer ' + cookie,
-              "content-type": "application/json"
-              }
-      })
-      .then(response => {
-          console.log(response.data);
-          setData(response.data)
-      })
-      .catch(function (error) {
-          console.log(error.response);
-      });
-
+    if(cookie !== null){
+      axios.get(
+        "https://localhost:7190/api/User/",
+        {
+            headers: {
+                "Authorization": 'Bearer ' + cookie,
+                "content-type": "application/json"
+                }
+        })
+        .then(response => {
+            console.log(response.data);
+            setData(response.data)
+        })
+        .catch(function (error) {
+            console.log(error.response);
+        });
+    }
   }, {})
 
-  if(data) {
+  if(data !== null) {
     classes.push("logedin");
   }
 

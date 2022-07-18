@@ -1,5 +1,6 @@
 //Font Family
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap");
+@import 'colors';
 
 // Reset
 * {
@@ -19,4 +20,25 @@ input {
 .main-content {
   height: 85vh;
   overflow: hidden;
+}
+
+.add-new-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 2.5%;
+  bottom: 48px;
+  font-size: 2em;
+  background-color: rgba($primary-color, 1);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  color: $light;
+  transition: all ease-in .5;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: rgba($primary-color, .7);
+  }
 }

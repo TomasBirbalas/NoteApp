@@ -1,24 +1,22 @@
 import React from 'react'
 import GetCookie from '../hooks/getCookie'
 import Note from '../components/note';
-import { UserNotes } from '../api/userApi'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function Home() {
-    const cookie = GetCookie('token');
+    let cookie = GetCookie('token');
+    console.log(cookie);
   return (
-    <div>
-        {(cookie) ? (
-            <div className="welcome">
+      <>
+      {
+          (cookie !== null) ?
+          <div className="welcome">
+              {console.log("patekau")}
                 <Note />
             </div>
-        ) : (
+            : 
             <h1>Please login</h1>
-        )}
-
-
-
-    </div>
+      }
+      </>
   )
 }
 

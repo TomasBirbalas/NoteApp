@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Business.Interfaces;
 using NoteApp.Repository.Entities.NoteEntity;
+using NoteApp.Repository.Models.DTO;
 
 namespace NoteApp.WebAPI.Controllers
 {
@@ -31,14 +32,18 @@ namespace NoteApp.WebAPI.Controllers
         {
             var result = await Task.Run(() => _noteServices.CreateNewNote(title, content, isPublic));
 
-            if (!result) return BadRequest("Failed");
+            if (result == null) return BadRequest("Failed");
 
-            return Ok("Note is created");
+            return Ok(result);
         }
-        [HttpPost("{id}/image")]
-        public async Task<IActionResult> AddImageToNote(Guid id, string path, string title)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> AddImageToNote(Guid id, [FromBody]string image, string title)
         {
-            var result = await Task.Run(() => _noteServices.AddImageToTheNote(id, path, title));
+            string convert = image.Replace("data:image/png;base64,", String.Empty);
+
+            byte[] image64 = Convert.FromBase64String(convert);
+
+            var result = await Task.Run(() => _noteServices.AddImageToTheNote(id, image64, title));
 
             if (!result) return BadRequest("Image cant be added");
 
@@ -50,13 +55,15 @@ namespace NoteApp.WebAPI.Controllers
         {
             var result = await Task.Run(() => _noteServices.EditNote(id, title, content));
 
-            if (!result) return BadRequest("Note is not your");
+            if (result == null) return BadRequest("Note is not your");
 
-            return Ok("Successfully updated");
+            NoteDTO converted = NoteToDTO(result);
+
+            return Ok(converted);
         }
 
         [HttpPut("{id}/category")]
-        public async Task<IActionResult> AddCategory(Guid id, [FromBody] string categoryTitle)
+        public async Task<IActionResult> AddCategory(Guid id, string categoryTitle)
         {
             bool result = await Task.Run(() => _noteServices.AddCategoryToNote(id, categoryTitle));
 
@@ -73,6 +80,41 @@ namespace NoteApp.WebAPI.Controllers
             if (!result) return BadRequest("You cant delete this note");
 
             return Ok("Note successfully deleted");
+        }
+
+        private NoteDTO NoteToDTO(Note note)
+        {
+
+                List<CategoryDTO> categoryList = new List<CategoryDTO>();
+                List<ImageDTO> imageList = new List<ImageDTO>();
+
+                if (note.Images.Count > 0)
+                {
+                    foreach (var image in note.Images)
+                    {
+                        ImageDTO imageDTO = new ImageDTO() { Id = image.Id, Title = image.Title, Data = image.Data };
+                        imageList.Add(imageDTO);
+                    }
+                }
+                if (note.CategoriesList.Count > 0)
+                {
+                    foreach (var category in note.CategoriesList)
+                    {
+                        CategoryDTO categoryDTO = new CategoryDTO() { Id = category.Id, Title = category.Title };
+                        categoryList.Add(categoryDTO);
+                    }
+                }
+                NoteDTO converted = new NoteDTO()
+                {
+                    Id = note.Id,
+                    Title = note.Title,
+                    Content = note.Content,
+                    IsPublic = note.IsPublic,
+                    Created = note.Created,
+                    Images = imageList,
+                    Categories = categoryList,
+                };
+            return converted;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace NoteApp.Business.Services
             _context = context;
             _userServices = user;
         }
-        public bool CreateNewNote(string title, string content, bool status)
+        public Guid CreateNewNote(string title, string content, bool status)
         {
             var user = _userServices.GetCurrentUser();
             var newNote = new Note(title, content, status);
@@ -31,7 +31,7 @@ namespace NoteApp.Business.Services
             _context.Add(newNote);
             _context.SaveChanges();
 
-            return true;
+            return newNote.Id;
         }
         public bool AddCategoryToNote(Guid noteId, string categoryTitle)
         {
@@ -44,14 +44,14 @@ namespace NoteApp.Business.Services
 
             return true;
         }
-        public bool EditNote(Guid noteId, string title, string content)
+        public Note EditNote(Guid noteId, string title, string content)
         {
             var userId = _userServices.GetCurrentUserId();
             var currentNote = GetNoteById(noteId);
 
             if (currentNote.UserId != userId)
             {
-                return false;
+                return null;
             }
 
             if (title != null)
@@ -65,7 +65,7 @@ namespace NoteApp.Business.Services
             _context.Notes.Update(currentNote);
             _context.SaveChanges();
 
-            return true;
+            return currentNote;
         }
         public bool DeleteNote(Guid noteId)
         {
@@ -94,10 +94,10 @@ namespace NoteApp.Business.Services
 
         public Note GetNoteById(Guid noteId)
         {
-            var currentNote = _context.Notes.Where(n => n.Id == noteId).First();
+            var currentNote = _context.Notes.Include(n => n.Images).Include(n => n.CategoriesList).Where(n => n.Id == noteId).First();
             return currentNote;
         }
-        public bool AddImageToTheNote(Guid noteId, string imagePath, string title)
+        public bool AddImageToTheNote(Guid noteId, byte[] imageBytes, string title)
         {
             var userId = _userServices.GetCurrentUserId();
             var note = _context.Notes?
@@ -108,8 +108,7 @@ namespace NoteApp.Business.Services
             {
                 return false;
             }
-            var buffer = ConvertImageToBinary(imagePath);
-            var image = new Image(title, buffer);
+            var image = new Image(title, imageBytes);
             note.Images.Add(image);
 
             _context.Add(image);

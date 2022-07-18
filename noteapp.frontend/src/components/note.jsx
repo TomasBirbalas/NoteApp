@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import GetCookie from '../hooks/getCookie';
 import axios from 'axios'
-import { Link } from 'react-router-dom'
-
+import EditNote from './editNoteModal';
+import CreateNote from './createNoteModal';
+import AddNewNoteBtn from '../components/addNewNoteBtn'
 import '../stylesheets/css/note.min.css'
 
-const cookie = GetCookie('token');
-const options = {
+let cookie = GetCookie('token');
+let options = {
   headers: {
     "Authorization": 'Bearer ' + cookie,
     "content-type": "application/json"
@@ -14,42 +15,79 @@ const options = {
 }
 
 function Note() {
-  const [note, setNote] = useState([]);
+  const [notes, setNote] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isNewNoteOpen, setIsNewNoteOpen] = useState(false);
 
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
 
-  // useEffect(() => {
-  //   console.log("userNote run");
+  useEffect(() => {
+    const fetchNotes = async () => {
+      await axios.get(`https://localhost:7190/api/User/Notes`, options)
+      .then(response => {
+        setNote(response.data);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error.response);
+      });
+    }
+    fetchNotes();
+  }, [])
 
-  //   const fetchPosts = async () => {axios.get(`https://localhost:7190/api/User/Notes`, options)
-  //     .then(response => {
-  //       setNote(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error.response);
-  //     });
-  //   }
-  // }, [])
+  const handleCreate = async (newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory) => {
+    let id = '';
+    try{
+      await axios.post(`https://localhost:7190/api/Note`, {}, {
+        headers: {
+          "Authorization": 'Bearer ' + cookie,
+          "content-type": "application/json"
+        },
+        params: newNote
+      }).then(response => {
+        console.log(response.data)
+        id = response.data;
+        if(checkedCategory.length > 0){
+          checkedCategory.forEach(category => {
 
-  const fetchPosts = async () => {
-    await axios.get(`https://localhost:7190/api/User/Notes`, options)
-    .then(response => {
-      setNote(response.data);
-    })
-    .catch(function (error) {
-      console.log(error.response);
-    });
+            try{
+              axios.post(`https://localhost:7190/api/Note/${response.data}/category`, {}, {
+                headers: {
+                  "Authorization": 'Bearer ' + cookie,
+                  "content-type": "application/json"
+                },
+                params: {
+                  categoryTitle: category.title,
+                }
+              })
+            }
+            catch (err) {
+              console.log(`Error: ${err.message}`);
+            }
+          });
+        }
+      })
+      console.log(id);
+    }
+    catch (err) {
+      console.log(`Error: ${err.message}`);
+    }
   }
-  fetchPosts();
 
   const handleEdit = async (noteId) => {
     const updatedNote = {title: editTitle, content: editContent}
     try {
-      const resp = await axios.put(`https://localhost:7190/api/Note/${noteId}`, {}, options, updatedNote);
-      setNote(note.map(n => n.id === noteId ? {...resp.data } : n));
-      setEditTitle('');
-      setEditContent('');
+      const resp = await axios.put(`https://localhost:7190/api/Note/${noteId}`, {}, {
+        headers: {
+          "Authorization": 'Bearer ' + cookie,
+          "content-type": "application/json"
+        },
+        params: updatedNote
+      });
+      setNote(notes.map(n => n.id === noteId ? { ...updatedNote } : n));
+      setIsOpen(false);
+      console.log('post edited');
     } catch (err) {
       console.log(`Error: ${err.message}`);
     }
@@ -62,32 +100,49 @@ function Note() {
     } catch (err) {
       console.log(`Error: ${err.message}`);
     }
-    const noteList = note.filter(n => n.id !== noteId);
+    const noteList = notes.filter(n => n.id !== noteId);
     setNote(noteList);
   }
 
-  const arr = note.map((note, index) => {
-
-    if(note.images.count > 0){
-      note.images.forEach(image => {
-        
-      });
-    }
-
+  const arr = notes.map((note, index) => {
     return (
       <div className="note-card" key={index}>
-      {note.images.count > 0 ? <img src="data:image/png;base64,"/> : "Image not fount" }
-      <h2>{ note.title }</h2>
-      <p>{ note.content }</p>
-      <Link to={`/editNote/${note.id}`}>btn</Link>
-      <button className="fa-solid fa-pen-to-square" value={note.id}></button>
-      <button className="fa-solid fa-trash-can" value={note.id} onClick={(e) => hadleDelete(e.target.value)}></button>
+        {note.images.length > 0 ? <img src={`data:image/png;base64,${note.images[0].data}`} className="card-cover"/> : `image not found` }
+        <div className='note-content'>
+          <h2>{ note.title }</h2>
+          <p>{ note.content }</p>
+          <div className='card-actions'>
+            <button className="fa-solid fa-pen-to-square" value={note.id} onClick={() => setIsOpen(true)}></button>
+            <button className="fa-solid fa-trash-can" value={note.id} onClick={(e) => hadleDelete(e.target.value)}></button>
+          </div>
+        </div>
+
+
+        <EditNote
+          notes={notes}
+          noteId={note.id}
+          handleEdit={handleEdit}
+          editTitle={editTitle}
+          setEditTitle={setEditTitle}
+          editContent={editContent}
+          setEditContent={setEditContent}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       </div>
     )
   });
   return (
     <div className="note-cards">
       {arr}
+      <button onClick={() => setIsNewNoteOpen(true)}>
+        <AddNewNoteBtn/>
+        <CreateNote
+          handleCreate={handleCreate}
+          isNewNoteOpen={isNewNoteOpen}
+          setIsNewNoteOpen={setIsNewNoteOpen}
+        />
+      </button>
     </div>
   )
 }

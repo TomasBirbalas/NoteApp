@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,MAAM,AAAC,CACH,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MAAM,CACnB,MAAM,CAAE,IAAI,CAQf,AAbD,AAOI,MAPE,CAOF,EAAE,AAAA,CACE,SAAS,CAAE,GAAG,CACjB,AATL,AAUI,MAVE,CAUF,IAAI,AAAC,CACD,SAAS,CAAE,GAAG,CACjB",
+    "sources": [
+        "../scss/errorPAge.scss"
+    ],
+    "names": [],
+    "file": "errorPAge.min.css"
+}
