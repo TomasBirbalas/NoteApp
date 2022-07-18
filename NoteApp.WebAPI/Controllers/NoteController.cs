@@ -37,13 +37,13 @@ namespace NoteApp.WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("{id}")]
-        public async Task<IActionResult> AddImageToNote(Guid id, [FromBody]string image, string title)
+        public async Task<IActionResult> AddImageToNote(Guid id, byte[] image, string title)
         {
-            string convert = image.Replace("data:image/png;base64,", String.Empty);
+            //string convert = image.Replace("data:image/png;base64,", String.Empty);
 
-            byte[] image64 = Convert.FromBase64String(convert);
+            //byte[] image64 = Convert.FromBase64String(convert);
 
-            var result = await Task.Run(() => _noteServices.AddImageToTheNote(id, image64, title));
+            var result = await Task.Run(() => _noteServices.AddImageToTheNote(id, image, title));
 
             if (!result) return BadRequest("Image cant be added");
 

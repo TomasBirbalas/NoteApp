@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import { Link } from 'react-router-dom';
 
 import Modal from 'react-modal';
 Modal.setAppElement('#root');
@@ -26,7 +27,7 @@ const EditNote = ({notes, noteId, handleEdit, editTitle, setEditTitle, editConte
                 <button type="submit" onClick={() => handleEdit(note.id)}>Submit</button>
             </form>
             </>
-            {/* {
+            {
             !editTitle && 
             <>
                 <h2>Post Not Found</h2>
@@ -34,7 +35,7 @@ const EditNote = ({notes, noteId, handleEdit, editTitle, setEditTitle, editConte
                 <Link to="/">Back to home page</Link>
                 </p>
                 </>
-            } */}
+            }
         </div>
         </Modal>
     )

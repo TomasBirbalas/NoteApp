@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import LoginUser from "./pages/login";
 import ErrorPage from "./pages/errorPage";
 import Register from "./pages/register";
+import NotesByCategory from "./components/notesByCategory";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/login" element={<LoginUser />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="*" element={<ErrorPage />}></Route>
+            <Route path="/category/:id" element={<NotesByCategory />}></Route>
           </Routes>
         </div>
         <Footer />

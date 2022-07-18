@@ -22,7 +22,7 @@ namespace NoteApp.Business.Services
             _userServices = user;
         }
 
-        public bool CreateNewCategory(string title)
+        public Category CreateNewCategory(string title)
         {
             var userId = _userServices.GetCurrentUserId();
             var category = new Category(title);
@@ -30,7 +30,7 @@ namespace NoteApp.Business.Services
             _context.Add(category);
             _context.SaveChanges();
 
-            return true;
+            return category;
         }
 
         public bool ChangeCategory(Guid categoryId, string newTitle)
@@ -60,19 +60,20 @@ namespace NoteApp.Business.Services
             }
             return true;
         }
-        public List<Note> FilterNotesByCategory(string categoryTitle)
+        public List<Note> FilterNotesByCategory(Guid id)
         {
             var userId = _userServices.GetCurrentUserId();
             var filteredNotes = _context.Notes
                 .Include(n => n.CategoriesList)
-                .Where(c => c.CategoriesList.Any(category => category.Title == categoryTitle) && c.UserId == userId)
+                .Where(c => c.CategoriesList.Any(category => category.Id == id) && c.UserId == userId)
                 .ToList();
 
             return filteredNotes;
         }
-        public List<Category> GetAllCategoriesFromDB()
+        public List<Category> GetAllUserCategories()
         {
-            var getAllCategories = _context.Categories.ToList();
+            var userId = _userServices.GetCurrentUserId();
+            var getAllCategories = _context.Categories.Where(category => category.UserId == userId).ToList();
 
             return getAllCategories;
         }

@@ -36,6 +36,22 @@ function Note() {
     fetchNotes();
   }, [])
 
+  const handleCategories = async (id, category) => {
+    try{
+      await axios.put(`https://localhost:7190/api/Note/${id}/category`, {}, {
+        headers: {
+          "Authorization": 'Bearer ' + cookie,
+          "content-type": "application/json"
+        },
+        params: {
+          categoryTitle: category,
+        }
+      })
+    }
+    catch (err) {
+      console.log(`Error: ${err.message}`);
+    }
+  }
   const handleCreate = async (newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory) => {
     let id = '';
     try{
@@ -48,30 +64,33 @@ function Note() {
       }).then(response => {
         console.log(response.data)
         id = response.data;
-        if(checkedCategory.length > 0){
-          checkedCategory.forEach(category => {
-
-            try{
-              axios.post(`https://localhost:7190/api/Note/${response.data}/category`, {}, {
-                headers: {
-                  "Authorization": 'Bearer ' + cookie,
-                  "content-type": "application/json"
-                },
-                params: {
-                  categoryTitle: category.title,
-                }
-              })
-            }
-            catch (err) {
-              console.log(`Error: ${err.message}`);
-            }
-          });
-        }
       })
-      console.log(id);
     }
     catch (err) {
       console.log(`Error: ${err.message}`);
+    }
+    if(isImageUploaded){
+      setImageUploaded({id: id})
+      try{
+        await axios.post(`https://localhost:7190/api/Note/${id}`, imageUploadedData, {
+        headers: {
+          "Authorization": 'Bearer ' + cookie,
+          "content-type": "application/json"
+        },
+        params: imageUploaded
+      }).then(response => {
+        console.log(response.data)
+      })
+      }
+      catch (err) {
+        console.log(`Error: ${err.message}`);
+      }
+    }
+
+    if(checkedCategory.length > 0){
+      checkedCategory.forEach(category => {
+        handleCategories(id, category.title);
+      });
     }
   }
 

@@ -20,7 +20,7 @@ const imageArray = [
     image4,
     image5
 ]
-const cookies = GetCookie('token');
+let cookies = GetCookie('token');
 
 function LoginUser() {
     let random = imageArray[Math.floor(Math.random() * imageArray.length)]

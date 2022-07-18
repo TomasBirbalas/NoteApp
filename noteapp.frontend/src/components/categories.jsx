@@ -3,7 +3,7 @@ import GetCookie from '../hooks/getCookie';
 import axios from 'axios';
 
 
-const cookie = GetCookie('token');
+let cookie = GetCookie('token');
 const options = {
     headers: {
       "Authorization": 'Bearer ' + cookie,
@@ -12,6 +12,8 @@ const options = {
   }
 function Categories({checkedCategoriesHandler}) {
   const [categories, setCategories] = useState([]);
+
+  const [categoryName, setCategoryName] = useState('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -26,6 +28,23 @@ function Categories({checkedCategoriesHandler}) {
     fetchCategories();
   }, [])
 
+const hadleAddCategory = async (categoryTitle) => {
+  await axios.post(`https://localhost:7190/api/Category`, {}, {
+    headers: {
+      "Authorization": 'Bearer ' + cookie,
+      "content-type": "application/json"
+    },
+    params: {
+      title: categoryTitle
+    }
+  }).then(response => {
+    const newCategory = response.data
+    const categoriesList = [...categories, newCategory];
+    setCategories(categoriesList);
+  })
+  setCategoryName('');
+}
+
   const categoriesArray = categories.map((category, index) => {
     return (
       <div className='category-checkbox' key={`category${index}`}>
@@ -37,7 +56,13 @@ function Categories({checkedCategoriesHandler}) {
 
   return (
     <div>
-      {categoriesArray}
+      <div className="categories-tag">
+        {categoriesArray}
+      </div>
+      <div>
+        <input type="text" value={categoryName} onChange={(e)=> setCategoryName(e.target.value)}/>
+        <button onClick={() => hadleAddCategory(categoryName) }>New category</button>
+      </div>
     </div>
   )
 }

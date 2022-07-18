@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import Categories from '../components/categories'
 
 
-const cookie = GetCookie('token');
+let cookie = GetCookie('token');
 const options = {
     headers: {
       "Authorization": 'Bearer ' + cookie,
@@ -25,9 +25,22 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
 
     const onFileChange = event => {
         console.log(event.target.files)
+
+
+        var reader = new FileReader();
+
+        reader.onload = function () {
+  
+          var arrayBuffer = this.result;
+          setImageUploadedData(arrayBuffer)
+        };
+  
+        reader.readAsArrayBuffer(event.target.files[0]);
+
+
+
         
         setImageUploaded({ title: event.target.files[0].name });
-        setImageUploadedData(event.target.files[0])
         setIsImageUploaded(true);
 
     };
@@ -50,7 +63,7 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
     }
 
   return (
-      <Modal isOpen={isNewNoteOpen}>
+      <Modal isOpen={isNewNoteOpen} onRequestClose={() => setIsNewNoteOpen(false)}>
         <div className="edit-note">
             <h2>Edit Note</h2>
             <form className="edit-note-form" onSubmit={(e)=> e.preventDefault()}>

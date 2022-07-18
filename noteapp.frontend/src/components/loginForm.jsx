@@ -8,6 +8,7 @@ function LoginForm( {Login, error} ) {
         e.preventDefault();
         
         Login(details);
+        console.log("user-logedin");
     }
 
   return (

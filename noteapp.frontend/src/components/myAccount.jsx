@@ -11,7 +11,7 @@ function MyAccountMenu() {
   const userCardClass = ["user-card"];
   
   useEffect(() => {
-    if(cookie !== null){
+    if(cookie !== null && cookie !== undefined){
       axios.get(
         "https://localhost:7190/api/User/",
         {
