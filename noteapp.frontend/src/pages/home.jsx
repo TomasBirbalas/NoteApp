@@ -1,20 +1,19 @@
 import React from 'react'
 import GetCookie from '../hooks/getCookie'
 import Note from '../components/note';
+import { Navigate } from 'react-router-dom'
 
 function Home() {
-    let cookie = GetCookie('token');
-    console.log(cookie);
+let cookie = GetCookie('token');
   return (
       <>
       {
-          (cookie !== null) ?
+          (cookie === null) ?
+          <Navigate to="/login" replace={true} />
+          : 
           <div className="welcome">
-              {console.log("patekau")}
                 <Note />
-            </div>
-            : 
-            <h1>Please login</h1>
+          </div>
       }
       </>
   )

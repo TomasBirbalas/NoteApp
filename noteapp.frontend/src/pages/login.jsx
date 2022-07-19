@@ -1,7 +1,5 @@
 import GetCookie from '../hooks/getCookie'
-import { Login } from '../api/authApi'
 import { Navigate } from 'react-router-dom'
-
 
 import "../stylesheets/css/login.min.css"
 
@@ -30,8 +28,8 @@ function LoginUser() {
     <div className="login-page">
         <img src={random} alt="image" className="backgroundImage"/>
         {/* <LoginForm Login={Login} error={error}/> */}
-        <LoginForm Login={Login}/>
-        {cookies ? <Navigate to="/"/> : console.log() }
+        <LoginForm/>
+        {(cookies) ? <Navigate to="/" replace={true} /> : console.log()}
     </div>
   )
 }

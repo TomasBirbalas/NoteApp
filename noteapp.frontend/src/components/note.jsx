@@ -5,6 +5,23 @@ import EditNote from './editNoteModal';
 import CreateNote from './createNoteModal';
 import AddNewNoteBtn from '../components/addNewNoteBtn'
 import '../stylesheets/css/note.min.css'
+import RenderCategories from '../components/renderCategories'
+
+import image1 from '../Images/defaultImages/1.jpg'
+import image2 from '../Images/defaultImages/2.jpg'
+import image3 from '../Images/defaultImages/3.jpg'
+import image4 from '../Images/defaultImages/4.jpg'
+import image5 from '../Images/defaultImages/5.jpg'
+import image6 from '../Images/defaultImages/6.jpg'
+
+const imageArray = [
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6
+]
 
 let cookie = GetCookie('token');
 let options = {
@@ -18,6 +35,8 @@ function Note() {
   const [notes, setNote] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isNewNoteOpen, setIsNewNoteOpen] = useState(false);
+
+  const [serachValue, setSearchValue] = useState('');
 
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
@@ -123,19 +142,30 @@ function Note() {
     setNote(noteList);
   }
 
-  const arr = notes.map((note, index) => {
+  const arr = notes.filter(note => {
+    return note.title.toLowerCase().indexOf(serachValue.toLocaleLowerCase()) >= 0
+  }).map((note, index) => {
+    let random = imageArray[Math.floor(Math.random() * imageArray.length)]
+
+    const categoriesArray = note.categories.map((category, index) => {
+      return(
+        <li className="category-tag" key={index}>{category.title}</li>
+      )
+    })
     return (
       <div className="note-card" key={index}>
-        {note.images.length > 0 ? <img src={`data:image/png;base64,${note.images[0].data}`} className="card-cover"/> : `image not found` }
+        {note.images.length > 0 ? <img src={`data:image/png;base64,${note.images[0].data}`} className="card-cover"/> : <img src={random} alt="image" className="card-cover"/> }
         <div className='note-content'>
           <h2>{ note.title }</h2>
           <p>{ note.content }</p>
+          <ul className="categories">
+            {categoriesArray}
+          </ul>
           <div className='card-actions'>
             <button className="fa-solid fa-pen-to-square" value={note.id} onClick={() => setIsOpen(true)}></button>
             <button className="fa-solid fa-trash-can" value={note.id} onClick={(e) => hadleDelete(e.target.value)}></button>
           </div>
         </div>
-
 
         <EditNote
           notes={notes}
@@ -152,9 +182,14 @@ function Note() {
     )
   });
   return (
+    <>
+    <div className="search-bar">
+        <input type="text" placeholder="Search..." onChange={e => setSearchValue(e.target.value)} />
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
     <div className="note-cards">
       {arr}
-      <button onClick={() => setIsNewNoteOpen(true)}>
+      <button className='add' onClick={() => setIsNewNoteOpen(true)}>
         <AddNewNoteBtn/>
         <CreateNote
           handleCreate={handleCreate}
@@ -163,6 +198,8 @@ function Note() {
         />
       </button>
     </div>
+    <RenderCategories />
+    </>
   )
 }
 

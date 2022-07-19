@@ -2,14 +2,20 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import GetCookie from '../hooks/getCookie';
 import RemoveCookie from '../hooks/removeCookie';
+import { Navigate } from 'react-router-dom'
 
 function MyAccountMenu() {
 
   let cookie = GetCookie('token');
   const [data, setData] = useState([]);
   const classes = ["my-account"];
-  const userCardClass = ["user-card"];
   
+
+  if(cookie && data == null){
+    <Navigate to="/account-details" />
+  }
+
+
   useEffect(() => {
     if(cookie !== null && cookie !== undefined){
       axios.get(
@@ -30,7 +36,8 @@ function MyAccountMenu() {
     }
   }, {})
 
-  if(data !== null) {
+  if(data.lenght > 0) {
+    console.log(data)
     classes.push("logedin");
   }
 

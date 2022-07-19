@@ -1,23 +1,12 @@
 import axios from 'axios'
 import SetCookie from '../hooks/setCookie'
 import RemoveCookie from '../hooks/removeCookie'
+import { Link } from 'react-router-dom'
+
+import Swal from 'sweetalert2'
+
 
 const mainHost = 'https://localhost:7190/api/Auth/'
-
-const Login = (details) => {
-    axios.post(
-        `https://localhost:7190/api/Auth/login`, {
-            email : details.email,
-            password : details.password,
-        })
-        .then(response => {
-            RemoveCookie('token');
-            SetCookie('token', response.data);
-        })
-        .catch(function (error) {
-            console.log(error.response.data);
-        });
-}
 
 const Register = details => {
     console.log(details);
@@ -33,4 +22,4 @@ const Register = details => {
         });
 }
 
-export { Login, Register }
+export {  Register }

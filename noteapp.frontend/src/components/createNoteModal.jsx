@@ -36,9 +36,6 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
         };
   
         reader.readAsArrayBuffer(event.target.files[0]);
-
-
-
         
         setImageUploaded({ title: event.target.files[0].name });
         setIsImageUploaded(true);
@@ -61,7 +58,6 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
         content: noteContent,
         isPublic: noteStatus
     }
-
   return (
       <Modal isOpen={isNewNoteOpen} onRequestClose={() => setIsNewNoteOpen(false)}>
         <div className="edit-note">

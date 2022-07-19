@@ -9,7 +9,6 @@ function Header() {
   return (
     <header>
       <Logo />
-      <SearchBar />
       <MyAccountMenu />
     </header>
   );
