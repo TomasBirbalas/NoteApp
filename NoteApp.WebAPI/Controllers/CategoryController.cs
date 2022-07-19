@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Business.Interfaces;
 using NoteApp.Repository.Entities;
@@ -55,9 +54,9 @@ namespace NoteApp.WebAPI.Controllers
         {
             var result = await Task.Run(() => _categoryServices.ChangeCategory(id, newTitle));
 
-            if (!result) return BadRequest("Something goes wrong");
+            if (result == null) return BadRequest("Something goes wrong");
 
-            return Ok("Successfully updated!");
+            return Ok(result);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)

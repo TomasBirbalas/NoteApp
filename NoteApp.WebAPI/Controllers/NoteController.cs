@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NoteApp.Business.Interfaces;
 using NoteApp.Repository.Entities.NoteEntity;
@@ -37,13 +36,20 @@ namespace NoteApp.WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("{id}")]
-        public async Task<IActionResult> AddImageToNote(Guid id, byte[] image, string title)
+        public async Task<IActionResult> AddImageToNote(Guid id, IFormFile file, string title)
         {
-            //string convert = image.Replace("data:image/png;base64,", String.Empty);
+            var result = false;
 
-            //byte[] image64 = Convert.FromBase64String(convert);
+            if (file.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    file.CopyTo(ms);
+                    byte[] data = ms.ToArray();
 
-            var result = await Task.Run(() => _noteServices.AddImageToTheNote(id, image, title));
+                   result = await Task.Run(() => _noteServices.AddImageToTheNote(id, data, title));
+                }
+            }
 
             if (!result) return BadRequest("Image cant be added");
 
