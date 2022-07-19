@@ -1,15 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NoteApp.Business.Interfaces;
 using NoteApp.Repository.DbContexts;
-using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace NoteApp.Business.Services
 {
@@ -97,7 +89,11 @@ namespace NoteApp.Business.Services
             var currentNote = _context.Notes.Include(n => n.Images).Include(n => n.CategoriesList).Where(n => n.Id == noteId).First();
             return currentNote;
         }
-        public bool AddImageToTheNote(Guid noteId, byte[] imageBytes, string title)
+        public void UploadImage()
+        {
+
+        }
+        public bool AddImageToTheNote(Guid noteId, byte[] data, string title)
         {
             var userId = _userServices.GetCurrentUserId();
             var note = _context.Notes?
@@ -108,7 +104,7 @@ namespace NoteApp.Business.Services
             {
                 return false;
             }
-            var image = new Image(title, imageBytes);
+            var image = new Image(title, data);
             note.Images.Add(image);
 
             _context.Add(image);

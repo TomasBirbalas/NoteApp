@@ -3,11 +3,6 @@ using NoteApp.Business.Interfaces;
 using NoteApp.Repository.DbContexts;
 using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoteApp.Business.Services
 {
@@ -33,7 +28,7 @@ namespace NoteApp.Business.Services
             return category;
         }
 
-        public bool ChangeCategory(Guid categoryId, string newTitle)
+        public Category ChangeCategory(Guid categoryId, string newTitle)
         {
             var userId = _userServices.GetCurrentUserId();
             var currentCategory = _context.Categories
@@ -45,7 +40,7 @@ namespace NoteApp.Business.Services
                 currentCategory.Title = newTitle;
                 _context.SaveChanges();
             }
-            return true;
+            return currentCategory;
         }
         public bool RemoveCategory(Guid categoryId)
         {

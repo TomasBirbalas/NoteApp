@@ -11,6 +11,6 @@ namespace NoteApp.Business.Interfaces
         Note EditNote(Guid noteId, string title, string content);
         List<Note> FilterNotesByTitle(string title);
         Note GetNoteById(Guid noteId);
-        bool AddImageToTheNote(Guid noteId, byte[] imageBytes, string title);
+        bool AddImageToTheNote(Guid noteId, byte[] data, string title);
     }
 }
