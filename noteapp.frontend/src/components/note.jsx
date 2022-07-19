@@ -33,6 +33,7 @@ let options = {
 
 function Note() {
   const [notes, setNote] = useState([]);
+  const [noteId, setNoteId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isNewNoteOpen, setIsNewNoteOpen] = useState(false);
 
@@ -89,9 +90,12 @@ function Note() {
       console.log(`Error: ${err.message}`);
     }
     if(isImageUploaded){
-      setImageUploaded({id: id})
+
+      const formData = new FormData();
+      formData.append('file', imageUploadedData)
+
       try{
-        await axios.post(`https://localhost:7190/api/Note/${id}`, imageUploadedData, {
+        await axios.post(`https://localhost:7190/api/Note/${id}`, formData, {
         headers: {
           "Authorization": 'Bearer ' + cookie,
           "content-type": "application/json"
@@ -123,7 +127,7 @@ function Note() {
         },
         params: updatedNote
       });
-      setNote(notes.map(n => n.id === noteId ? { ...updatedNote } : n));
+      setNote(notes.map(n => n.id === noteId ? { ...resp.data } : n));
       setIsOpen(false);
       console.log('post edited');
     } catch (err) {
@@ -162,22 +166,10 @@ function Note() {
             {categoriesArray}
           </ul>
           <div className='card-actions'>
-            <button className="fa-solid fa-pen-to-square" value={note.id} onClick={() => setIsOpen(true)}></button>
+            <button className="fa-solid fa-pen-to-square" value={note.id} onClick={(e) => {setNoteId(e.target.value); setIsOpen(true)}}></button>
             <button className="fa-solid fa-trash-can" value={note.id} onClick={(e) => hadleDelete(e.target.value)}></button>
           </div>
         </div>
-
-        <EditNote
-          notes={notes}
-          noteId={note.id}
-          handleEdit={handleEdit}
-          editTitle={editTitle}
-          setEditTitle={setEditTitle}
-          editContent={editContent}
-          setEditContent={setEditContent}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
       </div>
     )
   });
@@ -189,6 +181,17 @@ function Note() {
     </div>
     <div className="note-cards">
       {arr}
+      <EditNote
+          notes={notes}
+          noteId={noteId}
+          handleEdit={handleEdit}
+          editTitle={editTitle}
+          setEditTitle={setEditTitle}
+          editContent={editContent}
+          setEditContent={setEditContent}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       <button className='add' onClick={() => setIsNewNoteOpen(true)}>
         <AddNewNoteBtn/>
         <CreateNote

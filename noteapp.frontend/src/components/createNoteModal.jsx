@@ -25,17 +25,16 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
 
     const onFileChange = event => {
         console.log(event.target.files)
-
-
+        let imageFile = event.target.files[0];
         var reader = new FileReader();
 
-        reader.onload = function () {
-  
-          var arrayBuffer = this.result;
-          setImageUploadedData(arrayBuffer)
+        reader.onload = x => {
+
+          setImageUploadedData(imageFile);
+
         };
   
-        reader.readAsArrayBuffer(event.target.files[0]);
+        reader.readAsDataURL(imageFile);
         
         setImageUploaded({ title: event.target.files[0].name });
         setIsImageUploaded(true);
@@ -63,20 +62,31 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
         <div className="edit-note">
             <h2>Edit Note</h2>
             <form className="edit-note-form" onSubmit={(e)=> e.preventDefault()}>
+              <div className="input-wrap">
                 <label htmlFor="editTitle">Title</label>
                 <input id="editTitle" type="text" required value={noteTitle} onChange={(e) => {setNoteTile(e.target.value)}}/>
-
+              </div>
+                
+              <div className="input-wrap">
                 <label htmlFor="editContent">Content</label>
                 <input id="editContent" type="text" required value={noteContent} onChange={(e) => {setNoteContent(e.target.value)}}/>
-
+              </div>
+                
+              <div className="input-wrap">
                 <label htmlFor="editStatus">Is Your note is private?</label>
-                <input type="checkbox" onClick={(e) => setNoteStatus(!noteStatus)}/>
-
-                <label htmlFor="selectCategories"></label>
+                <label class="switch">
+                  <input type="checkbox" onClick={(e) => setNoteStatus(!noteStatus)}/>
+                  <span class="slider"></span>
+                </label>
+              </div>
+              
+              <div className="input-wrap-cat">
+                <h3><label htmlFor="selectCategories">Please select categories, or create new</label></h3>
                 <Categories checkedCategoriesHandler={checkedCategoriesHandler}/>
-                <input type="file" onChange={(e) => onFileChange(e)} />
-                {console.log(checkedCategory)}
-                <button type="submit" onClick={() => handleCreate(newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory)}>Submit</button>
+              </div>
+              
+              <input type="file" onChange={(e) => onFileChange(e)} />
+              <button className="submit-btn" type="submit" onClick={() => handleCreate(newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory)}>Submit</button>
             </form>
         </div>
     </Modal>

@@ -13,7 +13,7 @@ const EditNote = ({notes, noteId, handleEdit, editTitle, setEditTitle, editConte
         }
     }, [note, setEditTitle, setEditContent])
     return (
-        <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
+        <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} shouldCloseOnOverlayClick={true} >
         <div className="edit-note">
             <>
             <h2>Edit Note</h2>

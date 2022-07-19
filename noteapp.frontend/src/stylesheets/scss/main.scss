@@ -1,6 +1,6 @@
 //Font Family
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap");
-@import 'colors';
+@import "colors";
 
 // Reset
 * {
@@ -46,8 +46,8 @@ button.add {
   height: 60px;
   color: $light;
   cursor: pointer;
-  transition: transform ease-in .5s;
-  
+  transition: transform ease-in 0.5s;
+
   &:hover {
     transform: scale(1.2);
     background-color: #3898a5;
@@ -63,8 +63,8 @@ button.add {
 
   h1 {
     font-size: 6em;
-    margin-bottom: .2em;
-    color: rgba($primary-color, .2);
+    margin-bottom: 0.2em;
+    color: rgba($primary-color, 0.2);
   }
   a {
     font-size: 1.4em;
@@ -75,4 +75,85 @@ button.add {
   left: 50%;
   transform: translateX(-50%);
   top: 0;
+}
+
+.edit-category-title {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  background: #f8f8f8;
+  position: absolute;
+  padding: 4em 6em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .edit-category-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+
+    input {
+      color: rgba($primary-color, 0.8);
+    }
+    input:focus {
+      color: $primary-color;
+      border-color: $third-color;
+    }
+    button {
+      height: 50px;
+      font-size: 1.2em;
+      color: $light;
+      background-color: rgba($primary-color, 1);
+      transition: all ease-in 0.5s;
+
+      &:hover {
+        background-color: rgba($primary-color, 0.7);
+      }
+    }
+  }
+}
+
+.input {
+  width: 100%;
+  position: relative;
+  width: 100%;
+  margin: 1.2em 0;
+  font-size: 1.2em;
+
+  input {
+    background-color: transparent;
+    resize: none;
+    font-size: 1em;
+    padding: 4px 10px;
+    color: $light;
+  }
+  input:focus {
+    color: $light;
+    border-color: $third-color;
+  }
+  .input-wrap {
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid $light;
+    box-shadow: none;
+  }
+  label {
+    position: absolute;
+    pointer-events: none;
+    color: $light;
+    top: 0;
+    left: 10px;
+    transition: 0.4s ease all;
+  }
+  .input-wrap:focus ~ label,
+  .input-wrap:not(:placeholder-shown) ~ label {
+    top: -24px;
+    left: 10px;
+    color: $third-color;
+    opacity: 1;
+  }
+  .add-category {
+  }
 }
