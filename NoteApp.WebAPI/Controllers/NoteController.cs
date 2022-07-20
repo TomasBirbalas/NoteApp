@@ -33,7 +33,9 @@ namespace NoteApp.WebAPI.Controllers
 
             if (result == null) return BadRequest("Failed");
 
-            return Ok(result);
+            NoteDTO converted = NoteToDTO(result);
+
+            return Ok(converted);
         }
         [HttpPost("{id}")]
         public async Task<IActionResult> AddImageToNote(Guid id, IFormFile file, string title)
