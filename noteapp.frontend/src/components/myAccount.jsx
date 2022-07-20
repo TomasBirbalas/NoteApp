@@ -12,13 +12,6 @@ function MyAccountMenu() {
   
   const cookie = GetCookie('token');
   useEffect(() => {
-    if(typeof cookie === 'string' && cookie.length === 0)
-    {
-      setIsCookieExist(false);
-
-    }else {
-      setIsCookieExist(true);
-    }
     const fetchUserData = async () =>{
       try {
         const resp = await axios.get(
@@ -34,7 +27,12 @@ function MyAccountMenu() {
         console.log(`Error: ${err.message}`);
       }
     }
-    if(isCookieExist){
+    if(typeof cookie === 'string' && cookie.length === 0 || cookie === null)
+    {
+      setIsCookieExist(false);
+
+    }else {
+      setIsCookieExist(true);
       fetchUserData();
     }
   }, [isCookieExist])
@@ -64,7 +62,7 @@ function MyAccountMenu() {
         <h2>{data.name} {data.surname}</h2>
         <button onClick={logout}>Log out</button>
      </div>
-     {(Object.keys(data).length === 0 && cookie !== null) ? <Navigate to="/customer-details" />: ''}
+     {(Object.keys(data).length === 0 && isCookieExist === true) ? <Navigate to="/customer-details" replace={true}/>: ''}
     </div>
   )
 }
