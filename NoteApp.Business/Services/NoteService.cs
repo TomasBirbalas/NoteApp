@@ -15,7 +15,7 @@ namespace NoteApp.Business.Services
             _context = context;
             _userServices = user;
         }
-        public Guid CreateNewNote(string title, string content, bool status)
+        public Note CreateNewNote(string title, string content, bool status)
         {
             var user = _userServices.GetCurrentUser();
             var newNote = new Note(title, content, status);
@@ -23,7 +23,7 @@ namespace NoteApp.Business.Services
             _context.Add(newNote);
             _context.SaveChanges();
 
-            return newNote.Id;
+            return newNote;
         }
         public bool AddCategoryToNote(Guid noteId, string categoryTitle)
         {

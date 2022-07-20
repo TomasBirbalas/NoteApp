@@ -6,7 +6,7 @@ namespace NoteApp.Business.Interfaces
     public interface INoteService
     {
         bool AddCategoryToNote(Guid noteId, string categoryTitle);
-        Guid CreateNewNote(string title, string content, bool status);
+        Note CreateNewNote(string title, string content, bool status);
         bool DeleteNote(Guid noteId);
         Note EditNote(Guid noteId, string title, string content);
         List<Note> FilterNotesByTitle(string title);
