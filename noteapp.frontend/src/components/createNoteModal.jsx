@@ -82,7 +82,7 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
               </div>
               
               <input type="file" onChange={(e) => onFileChange(e)} />
-              <button className="submit-btn" type="submit" onClick={() => handleCreate(newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory, setNoteTile, setNoteContent)}>Submit</button>
+              <button className="submit-btn" type="submit" onClick={() => handleCreate(newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory, setNoteTile, setNoteContent, setNoteStatus, setImageUploaded, setCheckedCategory )}>Submit</button>
             </form>
         </div>
     </Modal>

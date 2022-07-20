@@ -117,7 +117,7 @@ function NotesByCategory() {
       )
     });
     return (
-      (arr.lenght > 0) ?
+      (arr.lenght !== 0) ?
       <div className="note-cards">
         {arr}
       </div>

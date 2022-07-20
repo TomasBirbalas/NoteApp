@@ -42,6 +42,7 @@ function RenderCategories() {
             },
             params: updatedCategory
           });
+          console.log(resp)
           setCategories(categories.map(c => c.id === categoryId ? { ...resp.data } : c));
           setIsOpen(false);
 

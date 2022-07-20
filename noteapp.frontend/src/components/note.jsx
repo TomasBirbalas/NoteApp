@@ -72,7 +72,7 @@ function Note() {
       console.log(`Error: ${err.message}`);
     }
   }
-  const handleCreate = async (newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory, setNoteTile, setNoteContent) => {
+  const handleCreate = async (newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory, setNoteTile, setNoteContent, setNoteStatus, setCheckedCategory) => {
     let id = '';
     try{
       await axios.post(`https://localhost:7190/api/Note`, {}, {
@@ -87,6 +87,9 @@ function Note() {
         const notesList = [response.data, ...notes];
         setNoteTile('');
         setNoteContent('');
+        setNoteStatus(false);
+        setImageUploaded({id: '', title: ''})
+        
         setNote(notesList);
         setIsNewNoteOpen(false);
       })
@@ -117,6 +120,8 @@ function Note() {
       checkedCategory.forEach(category => {
         handleCategories(id, category.title);
       });
+    }else {
+      setCheckedCategory([]);
     }
     if(isNoteCreated) {
       setIsOpen(false);

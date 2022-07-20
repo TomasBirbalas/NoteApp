@@ -60,6 +60,7 @@ namespace NoteApp.Business.Services
             var userId = _userServices.GetCurrentUserId();
             var filteredNotes = _context.Notes
                 .Include(n => n.CategoriesList)
+                .Include(n => n.Images)
                 .Where(c => c.CategoriesList.Any(category => category.Id == id) && c.UserId == userId)
                 .ToList();
 
