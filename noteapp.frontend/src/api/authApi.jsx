@@ -18,7 +18,13 @@ const Register = details => {
           passwordConfirmation : details.confirmPassword,
         })
         .then(response => {
-          console.log(response.data);
+          if(response.status == 200){
+            Swal.fire({
+                title: 'Successfully',
+                text: 'Have a nice journey with NoteApp',
+                icon: 'success',
+              })
+        }
         });
 }
 
