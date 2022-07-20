@@ -18,13 +18,16 @@ const EditNote = ({notes, noteId, handleEdit, editTitle, setEditTitle, editConte
             <>
             <h2>Edit Note</h2>
             <form className="edit-note-form" onSubmit={(e)=> e.preventDefault()}>
-                <label htmlFor="editTitle">Title</label>
-                <input id="editTitle" type="text" required value={editTitle} onChange={(e)=> setEditTitle(e.target.value)} />
+                <div className="input-wrap">
+                    <label htmlFor="editTitle">Title</label>
+                    <input id="editTitle" type="text" required value={editTitle} onChange={(e)=> setEditTitle(e.target.value)} />
+                </div>
+                <div className="input-wrap">
+                    <label htmlFor="editContent">Content</label>
+                    <input id="editContent" type="text" required value={editContent} onChange={(e)=> setEditContent(e.target.value)} />
+                </div>
 
-                <label htmlFor="editContent">Content</label>
-                <input id="editContent" type="text" required value={editContent} onChange={(e)=> setEditContent(e.target.value)} />
-
-                <button type="submit" onClick={() => handleEdit(note.id)}>Submit</button>
+                <button type="submit" className='submit-btn' onClick={() => handleEdit(note.id)}>Submit</button>
             </form>
             </>
             {

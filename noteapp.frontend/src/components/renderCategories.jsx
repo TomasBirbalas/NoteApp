@@ -64,8 +64,8 @@ function RenderCategories() {
 
       const categoriesList = categories.map((category, index) => {
         return(
-          <div className="catalog">
-            <a href={`category/${category.id}`} key={index} className="link-to-category" >
+          <div className="catalog" key={`category-${index}`}>
+            <a href={`category/${category.id}`} className="link-to-category" >
               <div class="folder_tab"></div>
               <div class="folder"></div>
               <h2>{category.title}</h2>

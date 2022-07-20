@@ -24,21 +24,17 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
     const [checkedCategory, setCheckedCategory] = useState([]);
 
     const onFileChange = event => {
-        console.log(event.target.files)
         let imageFile = event.target.files[0];
         var reader = new FileReader();
 
         reader.onload = x => {
-
           setImageUploadedData(imageFile);
-
         };
   
         reader.readAsDataURL(imageFile);
         
         setImageUploaded({ title: event.target.files[0].name });
         setIsImageUploaded(true);
-
     };
 
     const checkedCategoriesHandler = (event, category) => {
@@ -58,9 +54,9 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
         isPublic: noteStatus
     }
   return (
-      <Modal isOpen={isNewNoteOpen} onRequestClose={() => setIsNewNoteOpen(false)}>
+      <Modal isOpen={isNewNoteOpen} onRequestClose={() => setIsNewNoteOpen(false)} shouldCloseOnOverlayClick={true}>
         <div className="edit-note">
-            <h2>Edit Note</h2>
+            <h2>Create new note</h2>
             <form className="edit-note-form" onSubmit={(e)=> e.preventDefault()}>
               <div className="input-wrap">
                 <label htmlFor="editTitle">Title</label>
@@ -86,7 +82,7 @@ function CreateNote({handleCreate, isNewNoteOpen, setIsNewNoteOpen}) {
               </div>
               
               <input type="file" onChange={(e) => onFileChange(e)} />
-              <button className="submit-btn" type="submit" onClick={() => handleCreate(newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory)}>Submit</button>
+              <button className="submit-btn" type="submit" onClick={() => handleCreate(newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory, setNoteTile, setNoteContent)}>Submit</button>
             </form>
         </div>
     </Modal>

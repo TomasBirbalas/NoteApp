@@ -6,43 +6,61 @@ import { Navigate } from 'react-router-dom'
 
 function MyAccountMenu() {
 
-  let cookie = GetCookie('token');
-  const [data, setData] = useState([]);
+  const [isCookieExist, setIsCookieExist] = useState();
+  const [data, setData] = useState({});
   const classes = ["my-account"];
   
-
-  if(cookie && data == null){
-    <Navigate to="/account-details" />
-  }
-
-
   useEffect(() => {
-    if(cookie !== null && cookie !== undefined){
-      axios.get(
-        "https://localhost:7190/api/User/",
-        {
-            headers: {
-                "Authorization": 'Bearer ' + cookie,
-                "content-type": "application/json"
-                }
-        })
-        .then(response => {
-            console.log(response.data);
-            setData(response.data)
-        })
-        .catch(function (error) {
-            console.log(error.response);
-        });
+    const cookie = GetCookie('token');
+    console.log(cookie)
+    if(cookie == null)
+    {
+      setIsCookieExist(false);
+    }else {
+      setIsCookieExist(true);
+    }
+
+    const fetchUserData = async () =>{
+      try {
+        await axios.get(
+          "https://localhost:7190/api/User/",
+          {
+              headers: {
+                  "Authorization": 'Bearer ' + cookie,
+                  "content-type": "application/json"
+                  }
+          })
+          .then(response => {
+            console.log(response)
+              setData(response.data)
+          })
+          .catch(function (error) {
+              console.log(error.response);
+          });
+      } catch (err) {
+        console.log(`Error: ${err.message}`);
+      }
+    }
+
+    if(isCookieExist){
+      fetchUserData();
     }
   }, {})
 
-  if(data.lenght > 0) {
-    console.log(data)
+  if(Object.keys(data).length === 0) {
+    console.log('tuscia');
+    <Navigate to="/customer-details" replace />
+  }else {
     classes.push("logedin");
   }
 
   const logout = () => {
     RemoveCookie('token');
+    setIsCookieExist(false);
+  }
+
+  if(!isCookieExist) {
+    <Navigate to="/login" />
   }
 
   return (
@@ -54,6 +72,7 @@ function MyAccountMenu() {
       <div className="user-card">
         <h2>{data.name} {data.surname}</h2>
         <button onClick={logout}>Log out</button>
+        {(!isCookieExist ? <Navigate to="/login" /> : '')}
      </div>
     </div>
   )

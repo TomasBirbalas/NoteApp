@@ -56,13 +56,17 @@ const hadleAddCategory = async (categoryTitle) => {
 
   return (
     <div>
-      <div className="categories-tag">
-        {categoriesArray}
-      </div>
-      <div className="input-wrap">
-        <input type="text" value={categoryName} onChange={(e)=> setCategoryName(e.target.value)}/>
-        <button className="submit-btn" onClick={() => hadleAddCategory(categoryName) }>New category</button>
-      </div>
+      {
+        <>
+        <div className="categories-tag">
+          {categoriesArray}
+        </div>
+        <div className="input-wrap">
+          <input type="text" value={categoryName} onChange={(e)=> setCategoryName(e.target.value)}/>
+          <button className="submit-btn" onClick={() => hadleAddCategory(categoryName) }>New category</button>
+        </div>
+        </>
+      }
     </div>
   )
 }

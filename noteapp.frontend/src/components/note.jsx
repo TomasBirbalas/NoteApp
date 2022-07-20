@@ -36,6 +36,7 @@ function Note() {
   const [noteId, setNoteId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isNewNoteOpen, setIsNewNoteOpen] = useState(false);
+  const [isNoteCreated, setIsNoteCreated] = useState(false);
 
   const [serachValue, setSearchValue] = useState('');
 
@@ -47,7 +48,6 @@ function Note() {
       await axios.get(`https://localhost:7190/api/User/Notes`, options)
       .then(response => {
         setNote(response.data);
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error.response);
@@ -72,7 +72,7 @@ function Note() {
       console.log(`Error: ${err.message}`);
     }
   }
-  const handleCreate = async (newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory) => {
+  const handleCreate = async (newNote, imageUploaded, setImageUploaded, isImageUploaded, imageUploadedData, checkedCategory, setNoteTile, setNoteContent) => {
     let id = '';
     try{
       await axios.post(`https://localhost:7190/api/Note`, {}, {
@@ -82,8 +82,13 @@ function Note() {
         },
         params: newNote
       }).then(response => {
-        console.log(response.data)
-        id = response.data;
+        id = response.data.id;
+        (response.status === 200) ? setIsNoteCreated(true) : setIsNoteCreated(false);
+        const notesList = [response.data, ...notes];
+        setNoteTile('');
+        setNoteContent('');
+        setNote(notesList);
+        setIsNewNoteOpen(false);
       })
     }
     catch (err) {
@@ -101,8 +106,6 @@ function Note() {
           "content-type": "application/json"
         },
         params: imageUploaded
-      }).then(response => {
-        console.log(response.data)
       })
       }
       catch (err) {
@@ -114,6 +117,9 @@ function Note() {
       checkedCategory.forEach(category => {
         handleCategories(id, category.title);
       });
+    }
+    if(isNoteCreated) {
+      setIsOpen(false);
     }
   }
 
@@ -129,7 +135,6 @@ function Note() {
       });
       setNote(notes.map(n => n.id === noteId ? { ...resp.data } : n));
       setIsOpen(false);
-      console.log('post edited');
     } catch (err) {
       console.log(`Error: ${err.message}`);
     }
@@ -138,7 +143,6 @@ function Note() {
   const hadleDelete = async (noteId) => {
     try{
       await axios.delete(`https://localhost:7190/api/Note/${noteId}`, options)
-      .catch(function (error) {console.log(error.response)});
     } catch (err) {
       console.log(`Error: ${err.message}`);
     }
@@ -202,6 +206,12 @@ function Note() {
       </button>
     </div>
     <RenderCategories />
+    {notes.length == 0 &&
+      <div class="no-data">
+        <h1>Notes not found</h1>
+        <span>Please create your first note</span>
+      </div>
+    }
     </>
   )
 }

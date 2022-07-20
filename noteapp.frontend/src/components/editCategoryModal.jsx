@@ -23,6 +23,11 @@ function EditCategoryModal({categories, categoryId, handleEdit, editTitle, setEd
             <button type="submit" onClick={() => handleEdit(category.id)}>Submit</button>
         </form>
     </Modal>
+
+
+
+
+
   )
 }
 
