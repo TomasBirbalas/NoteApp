@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoteApp.Repository.Entities.NoteEntity
 {
@@ -24,6 +19,10 @@ namespace NoteApp.Repository.Entities.NoteEntity
         public Guid NoteId { get; set; }
         public Note Note { get; set; }
 
+        public Image()
+        {
+
+        }
         public Image(string title, byte[] data)
         {
             Id = Guid.NewGuid();

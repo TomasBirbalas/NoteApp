@@ -32,33 +32,6 @@ header {
       }
     }
   }
-  .search-bar {
-    display: flex;
-    align-items: center;
-    background-color: transparent;
-    min-width: 450px;
-    position: relative;
-
-    color: rgba($light, 1);
-
-    input {
-      background-color: transparent;
-      font-size: 1em;
-      padding: 0.6em 1em;
-      width: 100%;
-      border-bottom: 1px solid $light;
-      color: rgba($light, 1);
-
-      &::placeholder {
-        color: rgba($light, 0.6);
-      }
-    }
-    i {
-      position: absolute;
-      right: 1em;
-      font-size: 1.2em;
-    }
-  }
   .my-account {
     position: relative;
     i {
@@ -131,10 +104,37 @@ header {
     .user-card {
       display: block;
       position: absolute;
-      right: -2em;
-      top: 52px;
-      padding: 2em 4em;
-      background-color: rgba($light, 1);
+      right: 0;
+      top: 0;
+      padding: 0;
+      height: 48px;
+      width: 48px;
+      border-radius: 50%;
+      opacity: 1;
+      overflow: hidden;
+      background-color: transparent;
+      transition: height, width, opacity ease-in .5s;
+
+      h2, button {
+        display: none;
+      }
+
+      &:hover {
+        width: fit-content;
+        height: fit-content;
+        padding: 2em 4em;
+        border-radius: 0;
+        top: 32px;
+        right: -2em;
+        background-color: rgba($light, 1);
+
+        h2, button {
+          display: block;
+        }
+      }
+    }
+    .account-symbol:hover > .user-card {
+      opacity: 1;
     }
   }
 }

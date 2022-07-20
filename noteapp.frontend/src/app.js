@@ -6,8 +6,7 @@ import Home from "./pages/home";
 import LoginUser from "./pages/login";
 import ErrorPage from "./pages/errorPage";
 import Register from "./pages/register";
-import EditNote from "./components/editNote";
-import CreateNote from "./pages/createNote";
+import NotesByCategory from "./components/notesByCategory";
 
 function App() {
   return (
@@ -17,10 +16,10 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/" exact element={<Home />}></Route>
-            <Route path="/createNote" exact element={<CreateNote />}></Route>
             <Route path="/login" element={<LoginUser />}></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route path="/editNote/:id" component={EditNote}></Route>
+            <Route path="*" element={<ErrorPage />}></Route>
+            <Route path="/category/:id" element={<NotesByCategory />}></Route>
           </Routes>
         </div>
         <Footer />

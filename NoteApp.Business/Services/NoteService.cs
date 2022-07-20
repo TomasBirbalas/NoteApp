@@ -1,15 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NoteApp.Business.Interfaces;
 using NoteApp.Repository.DbContexts;
-using NoteApp.Repository.Entities;
 using NoteApp.Repository.Entities.NoteEntity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace NoteApp.Business.Services
 {
@@ -23,7 +15,7 @@ namespace NoteApp.Business.Services
             _context = context;
             _userServices = user;
         }
-        public bool CreateNewNote(string title, string content, bool status)
+        public Note CreateNewNote(string title, string content, bool status)
         {
             var user = _userServices.GetCurrentUser();
             var newNote = new Note(title, content, status);
@@ -31,7 +23,7 @@ namespace NoteApp.Business.Services
             _context.Add(newNote);
             _context.SaveChanges();
 
-            return true;
+            return newNote;
         }
         public bool AddCategoryToNote(Guid noteId, string categoryTitle)
         {
@@ -44,14 +36,14 @@ namespace NoteApp.Business.Services
 
             return true;
         }
-        public bool EditNote(Guid noteId, string title, string content)
+        public Note EditNote(Guid noteId, string title, string content)
         {
             var userId = _userServices.GetCurrentUserId();
             var currentNote = GetNoteById(noteId);
 
             if (currentNote.UserId != userId)
             {
-                return false;
+                return null;
             }
 
             if (title != null)
@@ -65,7 +57,7 @@ namespace NoteApp.Business.Services
             _context.Notes.Update(currentNote);
             _context.SaveChanges();
 
-            return true;
+            return currentNote;
         }
         public bool DeleteNote(Guid noteId)
         {
@@ -94,10 +86,14 @@ namespace NoteApp.Business.Services
 
         public Note GetNoteById(Guid noteId)
         {
-            var currentNote = _context.Notes.Where(n => n.Id == noteId).First();
+            var currentNote = _context.Notes.Include(n => n.Images).Include(n => n.CategoriesList).Where(n => n.Id == noteId).First();
             return currentNote;
         }
-        public bool AddImageToTheNote(Guid noteId, string imagePath, string title)
+        public void UploadImage()
+        {
+
+        }
+        public bool AddImageToTheNote(Guid noteId, byte[] data, string title)
         {
             var userId = _userServices.GetCurrentUserId();
             var note = _context.Notes?
@@ -108,8 +104,7 @@ namespace NoteApp.Business.Services
             {
                 return false;
             }
-            var buffer = ConvertImageToBinary(imagePath);
-            var image = new Image(title, buffer);
+            var image = new Image(title, data);
             note.Images.Add(image);
 
             _context.Add(image);

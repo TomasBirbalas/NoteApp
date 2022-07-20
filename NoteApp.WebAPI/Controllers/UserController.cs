@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+using NoteApp.Business.Interfaces;
 using NoteApp.Repository.Entities.NoteEntity;
 using NoteApp.Repository.Models;
-using NoteApp.Business.Interfaces;
 using NoteApp.Repository.Models.DTO;
 
 namespace NoteApp.WebAPI.Controllers

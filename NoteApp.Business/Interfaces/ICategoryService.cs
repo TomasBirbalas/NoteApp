@@ -5,10 +5,10 @@ namespace NoteApp.Business.Interfaces
 {
     public interface ICategoryService
     {
-        bool ChangeCategory(Guid categoryId, string newTitle);
-        bool CreateNewCategory(string title);
+        Category ChangeCategory(Guid categoryId, string newTitle);
+        Category CreateNewCategory(string title);
         bool RemoveCategory(Guid categoryId);
-        List<Note> FilterNotesByCategory(string categoryTitle);
-        List<Category> GetAllCategoriesFromDB();
+        List<Note> FilterNotesByCategory(Guid id);
+        List<Category> GetAllUserCategories();
     }
 }

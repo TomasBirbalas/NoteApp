@@ -1,7 +1,7 @@
 import GetCookie from '../hooks/getCookie'
 import axios from 'axios'
 
-const cookie = GetCookie('token');
+let cookie = GetCookie('token');
 const mainHost = "https://localhost:7190/api/Category";
 
 const CreateCategory = () => {
