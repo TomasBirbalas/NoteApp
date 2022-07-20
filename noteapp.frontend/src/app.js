@@ -7,6 +7,7 @@ import LoginUser from "./pages/login";
 import ErrorPage from "./pages/errorPage";
 import Register from "./pages/register";
 import NotesByCategory from "./components/notesByCategory";
+import CustomerDetailsPage from "./pages/customerDetails";
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
             <Route path="/" exact element={<Home />}></Route>
             <Route path="/login" element={<LoginUser />}></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route path="*" element={<ErrorPage />}></Route>
+            <Route path="/customer-details" element={<CustomerDetailsPage />}></Route>
             <Route path="/category/:id" element={<NotesByCategory />}></Route>
+            <Route path="*" element={<ErrorPage />}></Route>
           </Routes>
         </div>
         <Footer />

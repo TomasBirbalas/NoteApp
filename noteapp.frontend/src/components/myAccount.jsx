@@ -10,19 +10,18 @@ function MyAccountMenu() {
   const [data, setData] = useState({});
   const classes = ["my-account"];
   
+  const cookie = GetCookie('token');
   useEffect(() => {
-    const cookie = GetCookie('token');
-    console.log(cookie)
-    if(cookie == null)
+    if(typeof cookie === 'string' && cookie.length === 0)
     {
       setIsCookieExist(false);
+
     }else {
       setIsCookieExist(true);
     }
-
     const fetchUserData = async () =>{
       try {
-        await axios.get(
+        const resp = await axios.get(
           "https://localhost:7190/api/User/",
           {
               headers: {
@@ -30,35 +29,27 @@ function MyAccountMenu() {
                   "content-type": "application/json"
                   }
           })
-          .then(response => {
-            console.log(response)
-              setData(response.data)
-          })
-          .catch(function (error) {
-              console.log(error.response);
-          });
+          setData(resp.data)
       } catch (err) {
         console.log(`Error: ${err.message}`);
       }
     }
-
     if(isCookieExist){
       fetchUserData();
     }
-  }, {})
+  }, [isCookieExist])
+
+  const logout = () => {
+    RemoveCookie('token');
+    <Navigate to="/login" />
+    setIsCookieExist(false);
+  }
 
   if(Object.keys(data).length === 0) {
-    console.log('tuscia');
     <Navigate to="/customer-details" replace />
   }else {
     classes.push("logedin");
   }
-
-  const logout = () => {
-    RemoveCookie('token');
-    setIsCookieExist(false);
-  }
-
   if(!isCookieExist) {
     <Navigate to="/login" />
   }
@@ -72,8 +63,8 @@ function MyAccountMenu() {
       <div className="user-card">
         <h2>{data.name} {data.surname}</h2>
         <button onClick={logout}>Log out</button>
-        {(!isCookieExist ? <Navigate to="/login" /> : '')}
      </div>
+     {(Object.keys(data).length === 0 && cookie !== null) ? <Navigate to="/customer-details" />: ''}
     </div>
   )
 }

@@ -22,30 +22,38 @@ function LoginForm( ) {
                 SetCookie('token', response.data);
                 setLoginState(response.status);
                 setLoginData(response.data);
+
+                if(response.status == 200){
+                    Swal.fire({
+                        title: 'Welcome',
+                        text: 'Have a nice journey with NoteApp',
+                        icon: 'success',
+                      })
+                }else if(response.status == 400) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${response.data}, please try again...`,
+                        icon: 'error',
+                        confirmButtonText: 'Lets try one more time'
+                      })
+                }
             })
             .catch(function (error) {
-                console.log(error.response.data);
+                if(error.response.status == 400) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `${error.request.response}, please try again...`,
+                        icon: 'error',
+                        confirmButtonText: 'Lets try one more time'
+                      })
+                }
+                console.log(error.data);
             });
     }
 
     const submitHandler = e => {
         e.preventDefault();
         Login(details);
-
-        if(loginState === 200){
-            Swal.fire({
-                title: 'Welcome',
-                text: 'Have a nice journey with NoteApp',
-                icon: 'success',
-              })
-        }else {
-            Swal.fire({
-                title: 'Error!',
-                text: `${loginData}, please try again...`,
-                icon: 'error',
-                confirmButtonText: 'Lets try one more time'
-              })
-        }
     }
 
   return (
@@ -61,6 +69,7 @@ function LoginForm( ) {
         </div>
         <span>Still don't have an account? <Link to="/register">Creat an account</Link></span>
         <input type="submit" value="Login" />
+        {(loginState === 200) ? <Navigate to="/" /> : ''}
     </form>
   )
 }

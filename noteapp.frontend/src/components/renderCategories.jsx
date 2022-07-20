@@ -24,7 +24,6 @@ function RenderCategories() {
           await axios.get(`https://localhost:7190/api/Category`, options)
           .then(response => {
             setCategories(response.data);
-            console.log(response.data);
           })
           .catch(function (error) {
             console.log(error.response);

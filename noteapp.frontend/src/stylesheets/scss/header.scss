@@ -127,6 +127,7 @@ header {
         top: 32px;
         right: -2em;
         background-color: rgba($light, 1);
+        z-index: 999;
 
         h2, button {
           display: block;
