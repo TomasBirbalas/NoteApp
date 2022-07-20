@@ -39,8 +39,8 @@ function MyAccountMenu() {
 
   const logout = () => {
     RemoveCookie('token');
-    <Navigate to="/login" />
     setIsCookieExist(false);
+    <Navigate to="/login" replace={true}/>
   }
 
   if(Object.keys(data).length === 0) {

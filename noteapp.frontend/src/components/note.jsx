@@ -120,7 +120,6 @@ function Note() {
       checkedCategory.forEach(category => {
         handleCategories(id, category.title);
       });
-    }else {
       setCheckedCategory([]);
     }
     if(isNoteCreated) {
